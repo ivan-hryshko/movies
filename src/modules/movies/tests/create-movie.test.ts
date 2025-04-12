@@ -77,7 +77,7 @@ describe('POST /api/v1/movies/create', () => {
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('format');
   });
-  it('should not create a movie with wring format', async () => {
+  it('should not create a movie with wrong format', async () => {
     const movieData = {
       title : 'Casablanca',
       format: 'mp3',
