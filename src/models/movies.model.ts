@@ -1,5 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import Actor from './actors.model';
 
 interface MovieAttributes {
   id: number;
@@ -45,5 +46,8 @@ Movie.init(
     sequelize,
   }
 );
+
+Movie.belongsToMany(Actor, { through: 'MovieActors' });
+Actor.belongsToMany(Movie, { through: 'MovieActors' });
 
 export default Movie;
