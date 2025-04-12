@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../app';
+import app from '../../../app';
 
 describe('POST /api/v1/movies/create', () => {
   it('should create a movie successfully', async () => {

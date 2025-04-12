@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Movie from '../models/movie.model';
+import Movie from './movie.model';
 
 export class MovieController {
   static createMovie = async (req: Request, res: Response): Promise<void> => {
