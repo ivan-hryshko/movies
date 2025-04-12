@@ -22,4 +22,23 @@ describe('POST /api/v1/movies/create', () => {
     expect(response.body).toHaveProperty('message', 'Movie created successfully');
     expect(response.body).toHaveProperty('data');
   });
+
+  it('should not create a movie without title', async () => {
+    const movieData = {
+      year: 1942,
+      format: 'DVD',
+      actors: [
+        'Humphrey Bogart',
+        'Ingrid Bergman',
+        'Claude Rains',
+        'Peter Lorre'
+      ]
+    };
+    const response = await request(app)
+      .post('/api/v1/movies/create')
+      .send(movieData);
+    expect(response.status).toBe(400);
+    expect(response.body.errors.length).toBeGreaterThan(0);
+    expect(response.body.errors[0].path).toBe('title');
+  });
 });
