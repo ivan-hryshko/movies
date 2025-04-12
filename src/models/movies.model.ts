@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, BelongsToManySetAssociationsMixin, BelongsToManyAddAssociationsMixin } from 'sequelize';
 import sequelize from '../config/database';
 import Actor from './actors.model';
 
@@ -19,6 +19,10 @@ class Movie extends Model<MovieAttributes, MovieCreationAttributes> implements M
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  public setActors!: BelongsToManySetAssociationsMixin<Actor, number>;
+
+  public addActors!: BelongsToManyAddAssociationsMixin<Actor, number>;
 }
 
 Movie.init(
@@ -47,7 +51,7 @@ Movie.init(
   }
 );
 
-Movie.belongsToMany(Actor, { through: 'MovieActors' });
-Actor.belongsToMany(Movie, { through: 'MovieActors' });
+Movie.belongsToMany(Actor, { through: 'movies_actors' });
+Actor.belongsToMany(Movie, { through: 'movies_actors' });
 
 export default Movie;

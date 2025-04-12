@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsString, IsNumber , Length} from 'class-validator'
+import {IsNotEmpty, IsString, IsNumber, IsArray , Length} from 'class-validator'
 import { BaseDto } from '../../../utils/base-dto'
 
 export class CreateMovieDto extends BaseDto {
@@ -15,6 +15,10 @@ export class CreateMovieDto extends BaseDto {
   @IsString()
   @Length(1)
   format: string
+
+  @IsNotEmpty()
+  @IsArray()
+  actors: string[]
 
   constructor(data: any) {
     super(data)
