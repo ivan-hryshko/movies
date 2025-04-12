@@ -9,7 +9,7 @@
     "build": "rm -rf dist && npx tsc",
     "start": "node dist/index.js",
     "preserve": "npm run build",
-    "serve": "nodemon dist/index.js"
+    "serve": "concurrently \"npx tsc -w\" \"nodemon dist/index.js\""
   },
   "author": "Ivan Hryshko",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.0",
+    "concurrently": "^9.1.2",
     "dotenv": "^16.5.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
