@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import Movie from './movies.model';
 import { validationResult } from 'express-validator';
 import { MoviesService } from './movies.service';
 

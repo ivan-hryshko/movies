@@ -1,4 +1,4 @@
-import Movie from "./movies.model";
+import Movie from '../../models/movies.model';
 
 export class MoviesService {
 
