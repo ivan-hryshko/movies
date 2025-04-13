@@ -11,6 +11,13 @@ export class User extends Model {
   public async comparePassword(candidate: string): Promise<boolean> {
     return await bcrypt.compare(candidate, this.password);
   }
+
+  toJSON() {
+    const values = { ...this.get() };
+    delete values.password;
+    return values;
+  }
+
 }
 
 User.init({

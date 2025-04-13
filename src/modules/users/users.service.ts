@@ -13,7 +13,7 @@ export class UsersService {
     return user;
   }
 
-  public static generateTokenForUser(user: any) {
+  public static generateTokenForUser(user: User) {
     const token = generateToken(user.toJSON());
     return token;
   }

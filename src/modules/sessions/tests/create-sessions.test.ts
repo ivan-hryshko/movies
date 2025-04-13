@@ -1,5 +1,7 @@
 import request from 'supertest';
 import app from '../../../app';
+import jwt from 'jsonwebtoken';
+import ENV_VARIABLES from '../../../config/envs';
 
 describe('POST /api/v1/sessions', () => {
   it('should create a session successfully', async () => {
@@ -23,6 +25,12 @@ describe('POST /api/v1/sessions', () => {
     expect(sessionResponse.status).toBe(200);
     expect(sessionResponse.body.status).toBe(1);
     expect(sessionResponse.body.token).toBeDefined();
+
+    const decoded = jwt.verify(sessionResponse.body.token, ENV_VARIABLES.JWT_SECRET);
+
+    expect(decoded).not.toHaveProperty('password');
+    expect(decoded).toHaveProperty('email', userData.email);
+    expect(decoded).toHaveProperty('name', userData.name);
   });
   it('should not create a session without email', async () => {
     const sessionData = {
