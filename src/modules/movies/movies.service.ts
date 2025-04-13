@@ -24,8 +24,18 @@ export class MoviesService {
       })
     );
 
-    await newMovie.setActors(actorInstances);  // This is the many-to-many association
+    await newMovie.setActors(actorInstances);
 
-    return newMovie;
+    const movieWithActors = await Movie.findByPk(newMovie.id, {
+      include: [
+        {
+          model: Actor,
+          as: 'actors',
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    return movieWithActors;
   }
 }

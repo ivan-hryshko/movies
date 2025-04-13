@@ -51,7 +51,18 @@ Movie.init(
   }
 );
 
-Movie.belongsToMany(Actor, { through: 'movies_actors' });
-Actor.belongsToMany(Movie, { through: 'movies_actors' });
+Movie.belongsToMany(Actor, {
+  through: 'movies_actors',
+  as: 'actors',
+  foreignKey: 'movie_id',
+  otherKey: 'actor_id',
+});
+
+Actor.belongsToMany(Movie, {
+  through: 'movies_actors',
+  as: 'movies',
+  foreignKey: 'actor_id',
+  otherKey: 'movie_id',
+});
 
 export default Movie;
