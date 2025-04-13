@@ -1,27 +1,25 @@
 import { body, validationResult } from 'express-validator';
-import { RequestValidatror } from '../../utils/request.validatro';
-import { UsersRequestCreate } from './users.request';
 
-export class UsersValidator {
-  private static validateEmail() {
+export default class UsersCreateRules {
+  public static validateEmail() {
     return body('email')
       .notEmpty().withMessage('Email is required.')
       .isEmail().withMessage('Email must be a valid email address.')
       .isLength({ min: 5, max: 100 }).withMessage('Email must be between 5 and 100 characters long.');
   }
-  private static validateName() {
+  public static validateName() {
     return body('name')
       .notEmpty().withMessage('Name is required.')
       .isString().withMessage('Name must be a string.')
       .isLength({ min: 1, max: 100 }).withMessage('Name must be between 1 and 100 characters long.');
   }
-  private static validatePassword() {
+  public static validatePassword() {
     return body('password')
       .notEmpty().withMessage('Password is required.')
       .isString().withMessage('Password must be a string.')
       .isLength({ min: 8, max: 100 }).withMessage('Password must be between 8 and 100 characters long.');
   }
-  private static validateConfirmPassword() {
+  public static validateConfirmPassword() {
     return body('confirmPassword')
       .notEmpty().withMessage('Confirm password is required.')
       .isString().withMessage('Confirm password must be a string.')
@@ -32,21 +30,5 @@ export class UsersValidator {
         }
         return true;
       });
-  }
-  public static createMiddleware = [
-    this.validateEmail(),
-    this.validateName(),
-    this.validatePassword(),
-    this.validateConfirmPassword(),
-  ];
-
-  public static create(req: any, res: any) {
-    RequestValidatror.validateRequest(req, res);
-    return {
-      email: req.body.email,
-      name: req.body.name,
-      password: req.body.password,
-      confirmPassword: req.body.confirmPassword,
-    } as UsersRequestCreate
   }
 }

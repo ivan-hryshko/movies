@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Logger } from '../../utils/logger';
-import { RequestValidatror } from '../../utils/request.validatro';
-import { UsersValidator } from './users.validator';
+import { UsersValidator } from './validator/users.validator';
 import { UsersService } from './users.service';
 import { UsersResponse } from './users.response';
 

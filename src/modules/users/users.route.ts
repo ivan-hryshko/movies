@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { UsersController } from "./users.controller"
-import { UsersValidator } from "./users.validator"
+import { UsersValidator } from "./validator/users.validator"
 
 const router = Router()
 
