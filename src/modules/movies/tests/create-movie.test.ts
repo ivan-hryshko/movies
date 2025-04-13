@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../../app';
 
-describe('POST /api/v1/movies/create', () => {
+describe('POST /api/v1/movies', () => {
   it('should create a movie with emty actors', async () => {
     const movieData = {
       title: 'Casablanca',
@@ -10,7 +10,7 @@ describe('POST /api/v1/movies/create', () => {
       actors: [],
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
 
     expect(response.status).toBe(200);
@@ -33,7 +33,7 @@ describe('POST /api/v1/movies/create', () => {
       ]
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
 
     expect(response.status).toBe(200);
@@ -61,7 +61,7 @@ describe('POST /api/v1/movies/create', () => {
       ]
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
@@ -79,7 +79,7 @@ describe('POST /api/v1/movies/create', () => {
       ]
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
@@ -97,7 +97,7 @@ describe('POST /api/v1/movies/create', () => {
       ]
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
@@ -116,7 +116,7 @@ describe('POST /api/v1/movies/create', () => {
       ]
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
@@ -130,7 +130,7 @@ describe('POST /api/v1/movies/create', () => {
       format: 'DVD',
     };
     const response = await request(app)
-      .post('/api/v1/movies/create')
+      .post('/api/v1/movies')
       .send(movieData);
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);

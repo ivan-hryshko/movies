@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
-import { MOVIE_FORMATS } from './movies.constants';
-export class MoviesValidator {
+import { MOVIE_FORMATS } from '../movies.constants';
+export class MoviesValidatorCreate {
   private static validateYear() {
     return body('year')
       .notEmpty().withMessage('Year is required.')
@@ -24,7 +24,7 @@ export class MoviesValidator {
       .isArray().withMessage('Actors must be an array.')
     }
 
-  public static createMovieValidators = [
+  public static validate = [
     this.validateTitle(),
     this.validateYear(),
     this.validateFormat(),
