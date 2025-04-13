@@ -1,7 +1,14 @@
 import request from 'supertest';
 import app from '../../../app';
+import { testHelper } from '../../../utils/testHelper';
+
+let token = '';
 
 describe('POST /api/v1/movies', () => {
+  beforeAll(async () => {
+    token = await testHelper.generateTokenAndUser();
+  })
+
   it('should create a movie with emty actors', async () => {
     const movieData = {
       title: 'Casablanca',
@@ -11,7 +18,8 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
 
     expect(response.status).toBe(200);
     expect(response.body.data.title).toBe(movieData.title);
@@ -34,7 +42,8 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
 
     expect(response.status).toBe(200);
     expect(response.body.status).toBe(1);
@@ -62,7 +71,9 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('title');
@@ -80,7 +91,9 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('year');
@@ -98,7 +111,9 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('format');
@@ -117,7 +132,9 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('format');
@@ -131,7 +148,9 @@ describe('POST /api/v1/movies', () => {
     };
     const response = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
     expect(response.status).toBe(400);
     expect(response.body.errors.length).toBeGreaterThan(0);
     expect(response.body.errors[0].path).toBe('actors');

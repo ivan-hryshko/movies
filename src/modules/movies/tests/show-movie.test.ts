@@ -18,7 +18,8 @@ describe('GET /api/v1/movies/:id', () => {
     };
     const responseCreate = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
 
     expect(responseCreate.status).toBe(200);
 
@@ -39,7 +40,8 @@ describe('GET /api/v1/movies/:id', () => {
     };
     const createResponse = await request(app)
       .post('/api/v1/movies')
-      .send(movieData);
+      .send(movieData)
+      .set('Authorization', `${token}`)
 
     expect(createResponse.status).toBe(200);
 
