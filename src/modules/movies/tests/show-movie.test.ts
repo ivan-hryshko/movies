@@ -1,23 +1,12 @@
 import request from 'supertest';
 import app from '../../../app';
+import { testHelper } from '../../../utils/testHelper';
 
 let token = '';
 
 describe('GET /api/v1/movies/:id', () => {
-  const timestamp = Date.now();
-
-  const userData = {
-    "email": `test-${timestamp}@gmail.com`,
-    "name": "Ivan",
-    "password": "12345678",
-    "confirmPassword": "12345678"
-  };
-
   beforeAll(async () => {
-    const createUserRes = await request(app)
-      .post('/api/v1/users')
-      .send(userData);
-    token = createUserRes.body.token;
+    token = await testHelper.generateTokenAndUser();
   })
 
   it('should not show a movie without id', async () => {
