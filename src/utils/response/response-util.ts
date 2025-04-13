@@ -17,6 +17,11 @@ export class ResponseUtil {
     return this.responseJson
   }
 
+  public static setStatus1AndGetResponseJson() {
+    this.setStatus1()
+    return this.getResponseJson()
+  }
+
   public static successDelete() {
     this.setStatus1()
     return this.getResponseJson()
