@@ -5,7 +5,7 @@ import { UsersValidator } from './users.validator';
 import { UsersService } from './users.service';
 import { UsersResponse } from './users.response';
 
-export class MovieController {
+export class UsersController {
   static create = async (req: Request, res: Response): Promise<void> => {
     const dto = UsersValidator.create(req, res);
 

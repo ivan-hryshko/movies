@@ -1,7 +1,7 @@
-import { AuthenticationResponse } from '../authentication/auth.response';
+import { SessionsResponse } from '../sessions/sessions.response';
 
 export class UsersResponse {
   static async create(token: string,) {
-    return AuthenticationResponse.create(token);
+    return SessionsResponse.create(token);
   }
 }
