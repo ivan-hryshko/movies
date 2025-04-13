@@ -21,15 +21,8 @@ export class MoviesValidator {
 
   private static validateActors() {
     return body('actors')
-      .notEmpty().withMessage('Actors are required.')
       .isArray().withMessage('Actors must be an array.')
-      .custom((value) => {
-        if (value.length === 0) {
-          throw new Error('Actors array cannot be empty.');
-        }
-        return true;
-      });
-  }
+    }
 
   public static createMovieValidators = [
     this.validateTitle(),
