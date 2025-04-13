@@ -15,10 +15,8 @@ export class MovieController {
 
     try {
       const movie = await MoviesService.createMovie(dto);
-
-      res.status(200).json({ data: movie, status: 1 });
-      res.json(movie);
-
+      const movieRes = await MovieResponse.createMovieResponse(movie);
+      res.status(201).json(movieRes);
     } catch (error) {
       console.error('Error creating movie:', error);
       res.status(500).json({ message: 'Error creating movie', error });

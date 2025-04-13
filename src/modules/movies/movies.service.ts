@@ -26,16 +26,6 @@ export class MoviesService {
 
     await newMovie.setActors(actorInstances);
 
-    const movieWithActors = await Movie.findByPk(newMovie.id, {
-      include: [
-        {
-          model: Actor,
-          as: 'actors',
-          through: { attributes: [] },
-        },
-      ],
-    });
-
-    return movieWithActors;
+    return newMovie;
   }
 }
