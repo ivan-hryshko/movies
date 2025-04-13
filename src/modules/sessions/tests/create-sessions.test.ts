@@ -6,7 +6,7 @@ import ENV_VARIABLES from '../../../config/envs';
 describe('POST /api/v1/sessions', () => {
   it('should create a session successfully', async () => {
     const userData = {
-      "email": "test@gmail.com",
+      "email": "session@gmail.com",
       "name": "Ivan",
       "password": "12345678",
       "confirmPassword": "12345678"
