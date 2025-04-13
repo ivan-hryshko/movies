@@ -16,7 +16,7 @@ describe('DELETE /api/v1/movies/:id', () => {
     expect(responseCreate.status).toBe(200);
 
     const responseDel = await request(app)
-      .post(`/api/v1/movies/`)
+      .delete(`/api/v1/movies/undefined`)
 
     expect(responseDel.status).toBe(400);
   });
@@ -34,10 +34,9 @@ describe('DELETE /api/v1/movies/:id', () => {
       .send(movieData);
 
     expect(response.status).toBe(200);
-    console.log('response.body.data :>> ', response.body.data);
 
     const responseDel = await request(app)
-      .post(`/api/v1/movies/${response.body.data.id}`)
+      .delete(`/api/v1/movies/${response.body.data.id}`)
 
     expect(responseDel.status).toBe(200);
     expect(responseDel.body.status).toBe(1);
