@@ -2,6 +2,7 @@ import Movie from '../../models/movies.model';
 import Actor from '../../models/actors.model';
 import { CreateMovieDto } from './dto/create-movies.dto';
 import { MovieRequestDelete } from './movies.request';
+import { MoviesRepository } from './movies.repository';
 
 export class MoviesService {
   public static async create(dto: CreateMovieDto) {
@@ -31,12 +32,21 @@ export class MoviesService {
   }
 
   static async delete(params: MovieRequestDelete) {
-    const movie = await Movie.findByPk(params.id);
+    const movie = await MoviesRepository.getById(params.id);
     if (!movie) {
       throw new Error('Movie not found');
     }
 
     await movie.destroy();
-    return { message: 'Movie deleted successfully' };
+  }
+
+  static async getById(id: number) {
+    const movie = await MoviesRepository.getById(id);
+
+    if (!movie) {
+      throw new Error('Movie not found');
+    }
+
+    return movie;
   }
 }
