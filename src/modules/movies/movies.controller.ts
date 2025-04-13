@@ -1,17 +1,13 @@
 import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movies.dto';
 import { MovieResponse } from './movies.response';
 import { Logger } from '../../utils/logger';
+import { RequestValidatror } from '../../utils/request.validatro';
 
 export class MovieController {
   static createMovie = async (req: Request, res: Response): Promise<void> => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-    }
-
+    RequestValidatror.validateRequest(req, res);
     const dto = new CreateMovieDto(req.body);
 
     try {
