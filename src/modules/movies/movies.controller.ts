@@ -28,8 +28,8 @@ export class MovieController {
       await MoviesService.delete(params);
       res.status(200).json(MovieResponse.delete());
     } catch (error) {
-      Logger.error('Error creating movie:', error);
-      res.status(500).json({ message: 'Error creating movie', error });
+      Logger.error('Error deleting movie:', error);
+      res.status(500).json({ message: 'Error deleting movie', error });
     }
   }
 }
