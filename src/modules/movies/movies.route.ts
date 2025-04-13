@@ -6,5 +6,6 @@ const router = Router()
 
 router.post('/', MoviesValidatorCreate.validate, MovieController.create)
 router.delete('/:id', MovieController.delete)
+router.get('/:id', MovieController.show)
 
 export default router

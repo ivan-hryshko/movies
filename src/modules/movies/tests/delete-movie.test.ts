@@ -20,7 +20,7 @@ describe('DELETE /api/v1/movies/:id', () => {
 
     expect(responseDel.status).toBe(400);
   });
-  it('should create a movie successfully', async () => {
+  it('should delte a movie successfully', async () => {
     const movieData = {
       title: 'Casablanca',
       year: 1942,
