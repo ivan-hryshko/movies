@@ -44,4 +44,15 @@ export class MovieController {
       res.status(500).json({ message: 'Error getting movie', error })
     }
   }
+  static async list(req: Request, res: Response): Promise<void>{
+    // const params = MoviesValidatorShow.validate(req, res)
+
+    try {
+      const movies = await MoviesService.getList(req.query)
+      res.json(MovieResponse.list(movies))
+    } catch (error) {
+      Logger.error('Error getting movie:', error)
+      res.status(500).json({ message: 'Error getting movie', error })
+    }
+  }
 }

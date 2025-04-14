@@ -49,4 +49,10 @@ export class MoviesService {
 
     return movie
   }
+
+  static async getList(query: any) {
+    const movies = await MoviesRepository.getList(query)
+
+    return movies
+  }
 }
