@@ -10,6 +10,7 @@ It allows you to manage a list of movies and their associated actors.
 - Create movies with associated actors
   - if the actor doesn't exist, the app will create the actor
 - Get a movie by `id` with associated actors
+- Delete movie
 - Get list of movies by title or actor
   - Sorting and pagination
   - `search` query partially implemented
