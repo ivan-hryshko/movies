@@ -4,8 +4,17 @@ import { testHelper } from '../../../utils/testHelper'
 
 let token = ''
 let createRes: any = {}
+let createRes2: any = {}
 const movieData = {
   title: 'Casablanca',
+  year: 1942,
+  format: 'DVD',
+  actors: [
+    'Humphrey Bogart',
+  ]
+}
+const movieData2 = {
+  title: 'Blazing Saddles',
   year: 1942,
   format: 'DVD',
   actors: [
@@ -19,6 +28,13 @@ describe('GET /api/v1/movies/', () => {
     createRes = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
+      .set('Authorization', `${token}`)
+
+    expect(createRes.status).toBe(200)
+
+    createRes2 = await request(app)
+      .post('/api/v1/movies')
+      .send(movieData2)
       .set('Authorization', `${token}`)
 
     expect(createRes.status).toBe(200)
@@ -64,7 +80,7 @@ describe('GET /api/v1/movies/', () => {
 
     expect(listRes.body.meta).toBeDefined()
     expect(listRes.body.meta.total).toBeDefined()
-    expect(listRes.body.meta.total).toBe(1)
+    expect(listRes.body.meta.total).toBe(2)
 
     expect(listRes.body.data[0].title).toBe(movieData.title)
     expect(listRes.body.data[0].year).toBe(movieData.year)
@@ -89,11 +105,11 @@ describe('GET /api/v1/movies/', () => {
 
     expect(listRes.body.meta).toBeDefined()
     expect(listRes.body.meta.total).toBeDefined()
-    expect(listRes.body.meta.total).toBe(1)
+    expect(listRes.body.meta.total).toBe(2)
 
-    expect(listRes.body.data[0].title).toBe(movieData.title)
-    expect(listRes.body.data[0].year).toBe(movieData.year)
-    expect(listRes.body.data[0].format).toBe(movieData.format)
+    expect(listRes.body.data[0].title).toBe(movieData2.title)
+    expect(listRes.body.data[0].year).toBe(movieData2.year)
+    expect(listRes.body.data[0].format).toBe(movieData2.format)
     expect(listRes.body.data[0].actors).not.toBeDefined()
     expect(listRes.body.data[0].createdAt).toBeDefined()
     expect(listRes.body.data[0].updatedAt).toBeDefined()
@@ -119,6 +135,31 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.data[0].title).toBe(movieData.title)
     expect(listRes.body.data[0].year).toBe(movieData.year)
     expect(listRes.body.data[0].format).toBe(movieData.format)
+    expect(listRes.body.data[0].actors).not.toBeDefined()
+    expect(listRes.body.data[0].createdAt).toBeDefined()
+    expect(listRes.body.data[0].updatedAt).toBeDefined()
+  })
+  it('should list a movie successfully sort by title', async () => {
+    const query = {
+      sort: 'title',
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${token}`)
+      .query(query)
+
+    expect(listRes.status).toBe(200)
+    expect(listRes.body.status).toBe(1)
+    expect(Array.isArray(listRes.body.data)).toBe(true)
+
+    expect(listRes.body.meta).toBeDefined()
+    expect(listRes.body.meta.total).toBeDefined()
+    expect(listRes.body.meta.total).toBe(2)
+
+    expect(listRes.body.data[0].title).toBe(movieData2.title)
+    expect(listRes.body.data[0].year).toBe(movieData2.year)
+    expect(listRes.body.data[0].format).toBe(movieData2.format)
     expect(listRes.body.data[0].actors).not.toBeDefined()
     expect(listRes.body.data[0].createdAt).toBeDefined()
     expect(listRes.body.data[0].updatedAt).toBeDefined()
