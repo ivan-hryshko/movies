@@ -7,8 +7,7 @@ const startServer = async () => {
     await sequelize.authenticate()
     console.log('Database connection established.')
 
-    // TODO: change force to false before production
-    await sequelize.sync({ force: true })
+    await sequelize.sync({ force: false })
     console.log('Models synchronized.')
 
     app.listen(ENV_VARIABLES.APP_PORT, () => {
