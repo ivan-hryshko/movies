@@ -6,7 +6,7 @@ import { IStorageStrategy } from './IStorageStrategy'
 export class LocalStorageStrategy implements IStorageStrategy {
   private baseDir: string
 
-  constructor(subfolder = 'movies') {
+  constructor(subfolder: string) {
     this.baseDir = path.resolve(__dirname, `../../storage/${subfolder}`)
   }
 
