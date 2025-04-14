@@ -1,15 +1,18 @@
 # 🎬 Movies API
 
-This is a simple movies API built with Node.js, TypeScript, Sequelize, and SQLite. It allows you to manage a list of movies and their associated actors.
+This is a simple movies API built with Node.js, TypeScript, Sequelize, and SQLite.
+It allows you to manage a list of movies and their associated actors.
 
 ## ✅ Features
 
+- User creation
 - JWT authentication (via `JWT_SECRET`)
 - Create movies with associated actors
   - if the actor doesn't exist, the app will create the actor
 - Get a movie by `id` with associated actors
-- Full-text search by title or actor
-- Sorting
+- Get list of movies by title or actor
+  - Sorting and pagination
+  - `search` query partially implemented
 - Dockerized for easy deployment
 
 ---
