@@ -1,17 +1,17 @@
-import { MovieRequestDelete } from "../movies.request";
+import { MovieRequestDelete } from "../movies.request"
 export class MoviesValidatorDelete {
   static validate(req: any, res: any) {
-    const { id } = req.params;
+    const { id } = req.params
     if (!id) {
-      return res.status(400).json({ errors: ['Movie ID is required'] });
+      return res.status(400).json({ errors: ['Movie ID is required'] })
     }
 
     if (isNaN(id)) {
-      return res.status(400).json({ errors: ['Movie ID must be a number'] });
+      return res.status(400).json({ errors: ['Movie ID must be a number'] })
     }
 
     if (id <= 0) {
-      return res.status(400).json({ errors: ['Movie ID must be a positive number'] });
+      return res.status(400).json({ errors: ['Movie ID must be a positive number'] })
     }
 
     return {

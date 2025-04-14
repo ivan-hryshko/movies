@@ -1,6 +1,6 @@
-import { RequestValidatror } from '../../../utils/request.validatro';
-import { UsersRequestCreate } from '../users.request';
-import UsersCreateRules from './users-create-rules';
+import { RequestValidatror } from '../../../utils/request.validatro'
+import { UsersRequestCreate } from '../users.request'
+import UsersCreateRules from './users-create-rules'
 
 export class UsersValidator {
   public static createMiddleware = [
@@ -8,10 +8,10 @@ export class UsersValidator {
     UsersCreateRules.validateName(),
     UsersCreateRules.validatePassword(),
     UsersCreateRules.validateConfirmPassword(),
-  ];
+  ]
 
   public static create(req: any, res: any) {
-    RequestValidatror.validateRequest(req, res);
+    RequestValidatror.validateRequest(req, res)
     return {
       email: req.body.email,
       name: req.body.name,

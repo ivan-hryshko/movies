@@ -1,6 +1,6 @@
-import { User } from "../../models/users.model";
-import { generateToken } from "../../utils/jwt";
-import { UsersRequestCreate } from "./users.request";
+import { User } from "../../models/users.model"
+import { generateToken } from "../../utils/jwt"
+import { UsersRequestCreate } from "./users.request"
 
 
 export class UsersService {
@@ -9,12 +9,12 @@ export class UsersService {
       email: dto.email,
       name: dto.name,
       password: dto.password,
-    });
-    return user;
+    })
+    return user
   }
 
   public static generateTokenForUser(user: User) {
-    const token = generateToken(user.toJSON());
-    return token;
+    const token = generateToken(user.toJSON())
+    return token
   }
 }

@@ -1,14 +1,12 @@
-// src/modules/movies/actor.model.ts
+import { Model, DataTypes } from 'sequelize'
 
-import { Model, DataTypes } from 'sequelize';
-
-import sequelize from '../config/database'; // Adjust according to your setup
+import sequelize from '../config/database'
 
 class Actor extends Model {
-  public id!: number;
-  public name!: string;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public id!: number
+  public name!: string
+  public readonly createdAt!: Date
+  public readonly updatedAt!: Date
 }
 
 Actor.init(
@@ -20,7 +18,7 @@ Actor.init(
     },
     name: {
       type: DataTypes.STRING,
-      unique: true, // Make name unique
+      unique: true,
       allowNull: false,
     },
   },
@@ -29,6 +27,6 @@ Actor.init(
     tableName: 'actors',
     timestamps: true,
   }
-);
+)
 
-export default Actor;
+export default Actor

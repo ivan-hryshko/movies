@@ -1,5 +1,5 @@
-import Actor from "../../models/actors.model";
-import Movie from "../../models/movies.model";
+import Actor from "../../models/actors.model"
+import Movie from "../../models/movies.model"
 
 export class MoviesRepository {
   static async getById(movieId: number) {
@@ -11,8 +11,8 @@ export class MoviesRepository {
           through: { attributes: [] },
         },
       ],
-    });
+    })
 
-    return movie;
+    return movie
   }
 }

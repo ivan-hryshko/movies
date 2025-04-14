@@ -1,21 +1,21 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database';
-import bcrypt from 'bcrypt';
+import { DataTypes, Model } from 'sequelize'
+import sequelize from '../config/database'
+import bcrypt from 'bcrypt'
 
 export class User extends Model {
-  public id!: number;
-  public name!: string;
-  public email!: string;
-  public password!: string;
+  public id!: number
+  public name!: string
+  public email!: string
+  public password!: string
 
   public async comparePassword(candidate: string): Promise<boolean> {
-    return await bcrypt.compare(candidate, this.password);
+    return await bcrypt.compare(candidate, this.password)
   }
 
   toJSON() {
-    const values = { ...this.get() };
-    delete values.password;
-    return values;
+    const values = { ...this.get() }
+    delete values.password
+    return values
   }
 
 }
@@ -30,7 +30,7 @@ User.init({
   tableName: 'users',
   hooks: {
     beforeCreate: async (user: User) => {
-      user.password = await bcrypt.hash(user.password, 10);
+      user.password = await bcrypt.hash(user.password, 10)
     },
   },
-});
+})

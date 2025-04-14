@@ -1,22 +1,22 @@
-import { body } from 'express-validator';
-import { MOVIE_FORMATS } from '../movies.constants';
+import { body } from 'express-validator'
+import { MOVIE_FORMATS } from '../movies.constants'
 export class MoviesValidatorCreate {
   private static validateYear() {
     return body('year')
       .notEmpty().withMessage('Year is required.')
-      .isInt({ min: 0 }).withMessage('Year must be a valid number greater than or equal to 0.');
+      .isInt({ min: 0 }).withMessage('Year must be a valid number greater than or equal to 0.')
   }
   private static validateTitle() {
     return body('title')
       .notEmpty().withMessage('Title is required.')
-      .isString().withMessage('Title must be a string.');
+      .isString().withMessage('Title must be a string.')
   }
   private static getFormatMessage() {
-    return `Format must be one of ${MOVIE_FORMATS.join(', ')}.`;
+    return `Format must be one of ${MOVIE_FORMATS.join(', ')}.`
   }
   private static validateFormat() {
     return body('format')
-      .isIn(MOVIE_FORMATS).withMessage(this.getFormatMessage());
+      .isIn(MOVIE_FORMATS).withMessage(this.getFormatMessage())
   }
 
   private static validateActors() {
@@ -29,5 +29,5 @@ export class MoviesValidatorCreate {
     this.validateYear(),
     this.validateFormat(),
     this.validateActors(),
-  ];
+  ]
 }
