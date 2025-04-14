@@ -18,4 +18,10 @@ export class MovieResponse extends ResponseUtil {
     }
     return this.successList(movies, meta)
   }
+  static import(movies: Movie[], total: number) {
+    const meta = {
+      total: total,
+    }
+    return this.successList(movies, meta)
+  }
 }

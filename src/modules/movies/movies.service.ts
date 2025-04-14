@@ -55,4 +55,61 @@ export class MoviesService {
 
     return movies
   }
+
+  static parseMoviesTxt(file: Buffer) {
+    const content = file.toString('utf-8').trim()
+    const entries = content.split(/\n\s*\n/) // split by empty lines
+  
+    return entries.map(block => {
+      const lines = block.split('\n')
+      const movie: any = {}
+  
+      lines.forEach(line => {
+        const [key, ...rest] = line.split(':')
+        const value = rest.join(':').trim()
+  
+        switch (key.trim()) {
+          case 'Title':
+            movie.title = value
+            break
+          case 'Release Year':
+            movie.year = value
+            break
+          case 'Format':
+            movie.format = value
+            break
+          case 'Stars':
+            movie.actors = value.split(',').map(actor => actor.trim())
+            break
+        }
+      })
+  
+      return movie
+    })
+  }
+
+  static async import(file: Express.Multer.File): Promise<Movie[]> {
+    const moviesData = this.parseMoviesTxt(file.buffer)
+
+    const createdMovies: Movie[] = []
+
+    for (const data of moviesData) {
+      // const [movie] = await Movie.findOrCreate({
+      //   where: { title: data.title },
+      //   defaults: {
+      //     year: data.year,
+      //     format: data.format,
+      //   },
+      // })
+
+      // for (const name of data.actors) {
+      //   const [actor] = await Actor.findOrCreate({ where: { name } })
+      //   await movie.addActor(actor)
+      // }
+
+      // createdMovies.push(movie)
+    }
+
+    return createdMovies
+  }
 }

@@ -5,6 +5,7 @@ declare namespace Express {
   interface Request extends Flash {}
   export interface Request {
     user: any
+    file: any
   }
 }
 
