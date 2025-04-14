@@ -1,5 +1,6 @@
 import { body } from 'express-validator'
 import { MOVIE_FORMATS } from '../movies.constants'
+import { RequestValidatror } from '../../../utils/request.validatro'
 export class MoviesValidatorCreate {
   private static validateYear() {
     return body('year')
@@ -29,5 +30,6 @@ export class MoviesValidatorCreate {
     this.validateYear(),
     this.validateFormat(),
     this.validateActors(),
+    RequestValidatror.validateRequestMiddleware,
   ]
 }

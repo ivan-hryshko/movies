@@ -3,13 +3,11 @@ import { MoviesService } from './movies.service'
 import { CreateMovieDto } from './dto/create-movies.dto'
 import { MovieResponse } from './movies.response'
 import { Logger } from '../../utils/logger'
-import { RequestValidatror } from '../../utils/request.validatro'
 import { MoviesValidatorDelete } from './validator/delete-movie.validator'
 import { MoviesValidatorShow } from './validator/show-movie.validator'
 
 export class MovieController {
   static create = async (req: Request, res: Response): Promise<void> => {
-    RequestValidatror.validateRequest(req, res)
     const dto = new CreateMovieDto(req.body)
 
     try {
@@ -45,8 +43,6 @@ export class MovieController {
     }
   }
   static async list(req: Request, res: Response): Promise<void>{
-    // const params = MoviesValidatorShow.validate(req, res)
-
     try {
       const movies = await MoviesService.getList(req.query)
       res.json(MovieResponse.list(movies))

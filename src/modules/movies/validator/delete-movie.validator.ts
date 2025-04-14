@@ -17,6 +17,5 @@ export class MoviesValidatorDelete {
     return {
       id: parseInt(req.params.id, 10)
     } as MovieRequestDelete
-
   }
 }
