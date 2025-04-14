@@ -55,8 +55,8 @@ export class MovieController {
     try {
       const file = req.file
       if (!file) res.status(400).json({ error: 'No file uploaded' })
-      const createdMovies = await MoviesService.import(file)
-      res.status(200).json(MovieResponse.import(createdMovies, createdMovies.length))
+      const { createdMovies, total, imported } = await MoviesService.import(file)
+      res.status(200).json(MovieResponse.import(createdMovies, total, imported))
     } catch (error) {
       Logger.error('Error getting movie:', error)
       res.status(500).json({ message: 'Error getting movie', error })

@@ -4,6 +4,7 @@ import Actor from '../../models/actors.model'
 import { CreateMovieDto } from './dto/create-movies.dto'
 import { MovieRequestDelete } from './movies.request'
 import { MoviesRepository } from './movies.repository'
+import { Logger } from '../../utils/logger'
 
 export class MoviesService {
   public static async create(dto: CreateMovieDto) {
@@ -65,12 +66,7 @@ export class MoviesService {
     const moviesData: CreateMovieDto[] = entrieBlocks.map(block => {
       console.log('block :>> ', block);
       const lines = block.split('\n')
-      const movieData: any = {
-        title: '',
-        year: 0,
-        format: '',
-        actors: [],
-      }
+      const movieData: any = {}
 
       lines.forEach(line => {
         const [key, ...rest] = line.split(':')
@@ -78,16 +74,16 @@ export class MoviesService {
 
         switch (key.trim()) {
           case 'Title':
-            movieData.title = value || ''
+            movieData.title = value
             break
           case 'Release Year':
-            movieData.year = parseInt(value) || 0
+            movieData.year = parseInt(value)
             break
           case 'Format':
-            movieData.format = value || ''
+            movieData.format = value
             break
           case 'Stars':
-            movieData.actors = value.split(',').map(actor => actor.trim()) || []
+            movieData.actors = value.split(',').map(actor => actor.trim())
             break
         }
       })
@@ -98,7 +94,7 @@ export class MoviesService {
     return moviesData
   }
 
-  static async import(file: Express.Multer.File): Promise<Movie[]> {
+  static async import(file: Express.Multer.File): Promise<{createdMovies:Movie[], total:number, imported:number}> {
     const moviesData: CreateMovieDto[] = this.parseMoviesTxtFromFile(file.path)
 
     const createdMovies: Movie[] = []
@@ -108,6 +104,7 @@ export class MoviesService {
         title: data.title,
       })
       if (list.movies.length > 0) {
+        console.log('Movie already exists:', data.title)
         continue
       }
       const dto = new CreateMovieDto({
@@ -116,11 +113,18 @@ export class MoviesService {
         format: data.format,
         actors: data.actors,
       })
-      const newMovie = await this.create(dto)
-
-      createdMovies.push(newMovie)
+      try {
+        const newMovie = await this.create(data)
+        createdMovies.push(newMovie)
+      } catch (error) {
+        Logger.error(`Error creating movie: ${data}`, error)
+      }
     }
 
-    return createdMovies
+    return {
+      createdMovies,
+      total: createdMovies.length,
+      imported: moviesData.length,
+    }
   }
 }
