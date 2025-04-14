@@ -27,7 +27,6 @@ export class MoviesRepository {
       limit = 20,
       offset = 0,
     } = query
-
     const whereClause: any = {}
     const actorWhereClause: any = {}
 
@@ -38,9 +37,21 @@ export class MoviesRepository {
     }
 
     if (actor) {
-      actorWhereClause.name = where(fn('LOWER', col('name')), {
+      actorWhereClause.name = {
         [Op.like]: `%${actor.toLowerCase()}%`
-      })
+      }
+    }
+
+    let actorIncludeWhere: any = undefined
+    if (actor || search) {
+      actorIncludeWhere = {
+        ...(actor ? actorWhereClause : {}),
+        ...(search ? {
+          name: {
+            [Op.like]: `%${search.toLowerCase()}%`
+          }
+        } : {})
+      }
     }
 
     if (search) {
@@ -48,21 +59,19 @@ export class MoviesRepository {
         where(fn('LOWER', col('title')), {
           [Op.like]: `%${search.toLowerCase()}%`
         }),
-        where(fn('LOWER', col('actors.name')), {
-          [Op.like]: `%${search.toLowerCase()}%`
-        }),
       ]
     }
+
     const { count: total, rows: movies } = await Movie.findAndCountAll({
       where: whereClause,
       include: [
         {
           model: Actor,
           as: 'actors',
-          where: Object.keys(actorWhereClause).length ? actorWhereClause : undefined,
+          where: actorIncludeWhere,
           through: { attributes: [] },
           required: !!actor || !!search,
-          attributes:[]
+          attributes: [],
         },
       ],
       order: [[sort, order]],
