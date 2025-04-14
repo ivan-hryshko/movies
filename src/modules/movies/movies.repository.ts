@@ -62,6 +62,7 @@ export class MoviesRepository {
           where: Object.keys(actorWhereClause).length ? actorWhereClause : undefined,
           through: { attributes: [] },
           required: !!actor || !!search,
+          attributes:[]
         },
       ],
       order: [[sort, order]],
