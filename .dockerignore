@@ -12,3 +12,6 @@ dist
 
 # Sqllite
 database.sqlite
+
+# Storage
+/storage

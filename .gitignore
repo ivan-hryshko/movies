@@ -13,3 +13,6 @@ dist
 
 # sqlite database
 database.sqlite
+
+# Storage
+/storage

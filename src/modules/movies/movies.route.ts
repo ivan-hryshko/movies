@@ -1,23 +1,17 @@
 import { Router } from "express"
-import multer from "multer"
 
 import { MovieController } from "./movies.controller"
 import { MoviesValidatorCreate } from "./validator/create-movies.validator"
 import { authMiddleware } from "../../middlewares/auth.middleware"
 import { MoviesValidatorList } from "./validator/list-movies.validator"
+import { LocalStorageStrategy } from "../../storage/LocalStorageStrategy"
+import { StorageManager } from "../../storage/StorageManger"
 
 const router = Router()
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, '')
-  },
-  filename: (req, file, cb) => {
-    console.log('file :>> ', file);
-    const fileName = `${Date.now()}-${file.originalname}`
-    cb(null, fileName)
-  }
-})
-const upload = multer({ storage })
+
+const localStrategy = new LocalStorageStrategy('movies')
+const storageManager = new StorageManager(localStrategy)
+const upload = storageManager.getMulterStorage()
 
 
 router.post('/', [authMiddleware,  ...MoviesValidatorCreate.validate], MovieController.create)
