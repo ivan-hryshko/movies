@@ -1,3 +1,4 @@
+import fs from 'fs'
 import Movie from '../../models/movies.model'
 import Actor from '../../models/actors.model'
 import { CreateMovieDto } from './dto/create-movies.dto'
@@ -56,58 +57,68 @@ export class MoviesService {
     return movies
   }
 
-  static parseMoviesTxt(file: Buffer) {
-    const content = file.toString('utf-8').trim()
-    const entries = content.split(/\n\s*\n/) // split by empty lines
-  
-    return entries.map(block => {
+  static parseMoviesTxtFromFile(path: string): CreateMovieDto[]  {
+    const content = fs.readFileSync(path, 'utf-8').trim()
+    const entrieBlocks = content.split(/\n\s*\n/)
+    console.log('entrieBlocks :>> ', entrieBlocks);
+
+    const moviesData: CreateMovieDto[] = entrieBlocks.map(block => {
+      console.log('block :>> ', block);
       const lines = block.split('\n')
-      const movie: any = {}
-  
+      const movieData: any = {
+        title: '',
+        year: 0,
+        format: '',
+        actors: [],
+      }
+
       lines.forEach(line => {
         const [key, ...rest] = line.split(':')
         const value = rest.join(':').trim()
-  
+
         switch (key.trim()) {
           case 'Title':
-            movie.title = value
+            movieData.title = value || ''
             break
           case 'Release Year':
-            movie.year = value
+            movieData.year = parseInt(value) || 0
             break
           case 'Format':
-            movie.format = value
+            movieData.format = value || ''
             break
           case 'Stars':
-            movie.actors = value.split(',').map(actor => actor.trim())
+            movieData.actors = value.split(',').map(actor => actor.trim()) || []
             break
         }
       })
-  
+      const movie = new CreateMovieDto(movieData)
+
       return movie
     })
+    return moviesData
   }
 
   static async import(file: Express.Multer.File): Promise<Movie[]> {
-    const moviesData = this.parseMoviesTxt(file.buffer)
+    const moviesData: CreateMovieDto[] = this.parseMoviesTxtFromFile(file.path)
 
     const createdMovies: Movie[] = []
 
     for (const data of moviesData) {
-      // const [movie] = await Movie.findOrCreate({
-      //   where: { title: data.title },
-      //   defaults: {
-      //     year: data.year,
-      //     format: data.format,
-      //   },
-      // })
+      const list = await MoviesRepository.getList({
+        title: data.title,
+      })
+      if (list.movies.length > 0) {
+        continue
+      }
+      const dto = new CreateMovieDto({
+        title: data.title,
+        year: data.year,
+        format: data.format,
+        actors: data.actors,
+      })
+      const newMovie = await this.create(dto)
 
-      // for (const name of data.actors) {
-      //   const [actor] = await Actor.findOrCreate({ where: { name } })
-      //   await movie.addActor(actor)
-      // }
-
-      // createdMovies.push(movie)
+      createdMovies.push(newMovie)
     }
 
     return createdMovies
