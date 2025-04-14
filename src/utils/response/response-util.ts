@@ -3,6 +3,9 @@ import { CustomResponse } from './response-util.types'
 export class ResponseUtil {
   private static responseJson: CustomResponse = {}
 
+  private static setEmptyResponse(): CustomResponse {
+    return this.responseJson = { }
+  }
   private static setStatus(status: number) {
     this.responseJson.status = status
   }
@@ -18,16 +21,19 @@ export class ResponseUtil {
   }
 
   public static setStatus1AndGetResponseJson() {
+    this.setEmptyResponse()
     this.setStatus1()
     return this.getResponseJson()
   }
 
   public static successDelete() {
+    this.setEmptyResponse()
     this.setStatus1()
     return this.getResponseJson()
   }
 
   public static successWithData(data: any) {
+    this.setEmptyResponse()
     this.setStatus1()
     this.setData(data)
     return this.getResponseJson()

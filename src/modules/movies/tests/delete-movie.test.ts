@@ -51,5 +51,6 @@ describe('DELETE /api/v1/movies/:id', () => {
 
     expect(responseDel.status).toBe(200);
     expect(responseDel.body.status).toBe(1);
+    expect(responseDel.body).toEqual({ status: 1 });
   });
 });

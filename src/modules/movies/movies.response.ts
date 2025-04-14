@@ -1,15 +1,15 @@
 import Movie from '../../models/movies.model';
 import { MoviesRepository } from './movies.repository';
 import { ResponseUtil } from '../../utils/response/response-util';
-export class MovieResponse {
+export class MovieResponse extends ResponseUtil {
   static async create(movie: Movie) {
     const movieRepostitory = await MoviesRepository.getById(movie.id)
-    return ResponseUtil.successWithData(movieRepostitory)
+    return this.successWithData(movieRepostitory)
   }
   static delete() {
-    return ResponseUtil.successDelete()
+    return this.successDelete()
   }
   static show(movie: Movie) {
-    return ResponseUtil.successWithData(movie)
+    return this.successWithData(movie)
   }
 }
