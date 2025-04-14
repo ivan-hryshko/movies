@@ -1,4 +1,4 @@
-import { Op } from "sequelize"
+import { col, fn, Op, where } from "sequelize"
 import Actor from "../../models/actors.model"
 import Movie from "../../models/movies.model"
 
@@ -32,21 +32,28 @@ export class MoviesRepository {
     const actorWhereClause: any = {}
 
     if (title) {
-      whereClause.title = { [Op.iLike]: `%${title}%` }
+      whereClause.title = where(fn('LOWER', col('title')), {
+        [Op.like]: `%${title.toLowerCase()}%`
+      })
     }
 
     if (actor) {
-      actorWhereClause.name = { [Op.iLike]: `%${actor}%` }
+      actorWhereClause.name = where(fn('LOWER', col('name')), {
+        [Op.like]: `%${actor.toLowerCase()}%`
+      })
     }
 
     if (search) {
       whereClause[Op.or] = [
-        { title: { [Op.iLike]: `%${search}%` } },
-        { '$actors.name$': { [Op.iLike]: `%${search}%` } },
+        where(fn('LOWER', col('title')), {
+          [Op.like]: `%${search.toLowerCase()}%`
+        }),
+        where(fn('LOWER', col('actors.name')), {
+          [Op.like]: `%${search.toLowerCase()}%`
+        }),
       ]
     }
-
-    const movies = await Movie.findAll({
+    const { count: total, rows: movies } = await Movie.findAndCountAll({
       where: whereClause,
       include: [
         {
@@ -60,8 +67,9 @@ export class MoviesRepository {
       order: [[sort, order]],
       limit: Number(limit),
       offset: Number(offset),
+      distinct: true,
     })
 
-    return movies
+    return { movies, total }
   }
 }

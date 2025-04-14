@@ -3,59 +3,97 @@ import app from '../../../app'
 import { testHelper } from '../../../utils/testHelper'
 
 let token = ''
+let createRes: any = {}
+const movieData = {
+  title: 'Casablanca',
+  year: 1942,
+  format: 'DVD',
+  actors: [
+    'Humphrey Bogart',
+  ]
+}
 
-describe('GET /api/v1/movies/:id', () => {
+describe('GET /api/v1/movies/', () => {
   beforeAll(async () => {
     token = await testHelper.generateTokenAndUser()
-  })
-
-  it('should not show a movie without id', async () => {
-    const movieData = {
-      title: 'Casablanca',
-      year: 1942,
-      format: 'DVD',
-      actors: [],
-    }
-    const responseCreate = await request(app)
+    createRes = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
       .set('Authorization', `${token}`)
 
-    expect(responseCreate.status).toBe(200)
-
-    const responseMovie = await request(app)
-      .get(`/api/v1/movies/undefined`)
-      .set('Authorization', `${token}`)
-
-    expect(responseMovie.status).toBe(400)
+    expect(createRes.status).toBe(200)
   })
-  it('should show a movie successfully', async () => {
-    const movieData = {
+
+  // it('should not list a movie without id', async () => {
+  //   const movieData = {
+  //     title: 'Casablanca',
+  //     year: 1942,
+  //     format: 'DVD',
+  //     actors: [],
+  //   }
+  //   const responseCreate = await request(app)
+  //     .post('/api/v1/movies')
+  //     .send(movieData)
+  //     .set('Authorization', `${token}`)
+
+  //   expect(responseCreate.status).toBe(200)
+
+  //   const listRes = await request(app)
+  //     .get(`/api/v1/movies/undefined`)
+  //     .set('Authorization', `${token}`)
+
+  //   expect(listRes.status).toBe(400)
+  // })
+  it('should list a movie successfully with title', async () => {
+    const query = {
       title: 'Casablanca',
-      year: 1942,
-      format: 'DVD',
-      actors: [
-        'Humphrey Bogart',
-      ]
     }
-    const createResponse = await request(app)
-      .post('/api/v1/movies')
-      .send(movieData)
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
       .set('Authorization', `${token}`)
+      .query(query)
 
-    expect(createResponse.status).toBe(200)
+    expect(listRes.status).toBe(200)
+    console.log('listRes.body :>> ', listRes.body);
+    expect(listRes.body.status).toBe(1)
+    expect(Array.isArray(listRes.body.data)).toBe(true)
 
-    const responseMovie = await request(app)
-      .get(`/api/v1/movies/${createResponse.body.data.id}`)
+    expect(listRes.body.meta).toBeDefined()
+    expect(listRes.body.meta.total).toBeDefined()
+    expect(listRes.body.meta.total).toBe(1)
+
+    expect(listRes.body.data[0].title).toBe(movieData.title)
+    expect(listRes.body.data[0].year).toBe(movieData.year)
+    expect(listRes.body.data[0].format).toBe(movieData.format)
+    expect(listRes.body.data[0].actors[0].name).toBe(movieData.actors[0])
+    expect(listRes.body.data[0].createdAt).toBeDefined()
+    expect(listRes.body.data[0].updatedAt).toBeDefined()
+  })
+  it('should list a movie successfully with actor', async () => {
+    const query = {
+      actor: 'Humphrey Bogart',
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
       .set('Authorization', `${token}`)
+      .query(query)
 
-    expect(responseMovie.status).toBe(200)
-    expect(responseMovie.body.status).toBe(1)
-    expect(responseMovie.body.data.title).toBe(movieData.title)
-    expect(responseMovie.body.data.year).toBe(movieData.year)
-    expect(responseMovie.body.data.format).toBe(movieData.format)
-    expect(responseMovie.body.data.actors[0].name).toBe(movieData.actors[0])
-    expect(responseMovie.body.data.createdAt).toBeDefined()
-    expect(responseMovie.body.data.updatedAt).toBeDefined()
+    expect(listRes.status).toBe(200)
+    console.log('listRes.body :>> ', listRes.body);
+    expect(listRes.body.status).toBe(1)
+    expect(Array.isArray(listRes.body.data)).toBe(true)
+
+    expect(listRes.body.meta).toBeDefined()
+    expect(listRes.body.meta.total).toBeDefined()
+    expect(listRes.body.meta.total).toBe(1)
+
+    expect(listRes.body.data[0].title).toBe(movieData.title)
+    expect(listRes.body.data[0].year).toBe(movieData.year)
+    expect(listRes.body.data[0].format).toBe(movieData.format)
+    expect(listRes.body.data[0].actors[0].name).toBe(movieData.actors[0])
+    expect(listRes.body.data[0].createdAt).toBeDefined()
+    expect(listRes.body.data[0].updatedAt).toBeDefined()
   })
 })

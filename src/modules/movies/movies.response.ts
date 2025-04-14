@@ -12,7 +12,10 @@ export class MovieResponse extends ResponseUtil {
   static show(movie: Movie) {
     return this.successWithData(movie)
   }
-  static list(movies: Movie[]) {
-    return this.successWithData(movies)
+  static list(movies: Movie[], total: number) {
+    const meta = {
+      total: total,
+    }
+    return this.successList(movies, meta)
   }
 }

@@ -15,6 +15,9 @@ export class ResponseUtil {
   private static setData(data: any) {
     this.responseJson.data = data
   }
+  private static setMeta(meta: any) {
+    this.responseJson.meta = meta
+  }
 
   public static getResponseJson() {
     return this.responseJson
@@ -36,6 +39,14 @@ export class ResponseUtil {
     this.setEmptyResponse()
     this.setStatus1()
     this.setData(data)
+    return this.getResponseJson()
+  }
+
+  public static successList(data: any, meta: any) {
+    this.setEmptyResponse()
+    this.setStatus1()
+    this.setData(data)
+    this.setMeta(meta)
     return this.getResponseJson()
   }
 }
