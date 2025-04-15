@@ -7,8 +7,8 @@ const app = express()
 
 app.use(express.json())
 
-app.use('/static', express.static(TsNavigator.fromRoot('static')))
 
+app.use('/static', express.static(TsNavigator.fromRoot('public/static')))
 app.use('/', rootRoutes)
 app.use('/api/v1', apiV1routes)
 

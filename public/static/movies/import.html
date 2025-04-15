@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies</title>
+  <link rel="stylesheet" href="/static/main.css" />
+</head>
+<body>
+  <h1>Welcome to Movies</h1>
+  <h3>please provide .txt with movies list</h3>
+  <form id="importForm" action="/api/v1/movies/import" method="POST" enctype="multipart/form-data">
+    <input id="movieFile" type="file" name="movies" accept=".txt" required />
+    <br /><br />
+    <input type="submit" value="Import" />
+  </form>
+</body>
+</html>
+
+<script src="/static/movies/import.js"></script>
+

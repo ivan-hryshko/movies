@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Movies</title>
-  <link rel="stylesheet" href="static/root/welcome.css" />
+  <link rel="stylesheet" href="/static/main.css" />
 </head>
 <body>
+  <h1>Welcome to Movies</h1>
+
   <form id="loginForm">
     <input type="text" id="name" placeholder="Name" required /><br />
     <input type="email" id="email" placeholder="Email" required /><br />
@@ -14,16 +16,8 @@
     <button type="submit">Sign Up</button>
   </form>
 
-  <br />
-  <h1>Welcome to Movies</h1>
-  <h3>please provide .txt with movies list</h3>
-  <form id="importForm" style="display: none;" action="/api/v1/movies/import" method="POST" enctype="multipart/form-data">
-    <input id="movieFile" type="file" name="movies" accept=".txt" required />
-    <br /><br />
-    <input type="submit" value="Import" />
-  </form>
 </body>
 </html>
 
-<script src="static/root/welcome.js"></script>
+<script src="static/root/signup.js"></script>
 
