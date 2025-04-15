@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Імпорт фільмів</title>
+</head>
+<body>
+  <h1>Завантажити файл з фільмами</h1>
+  <form action="http://localhost:8000/api/v1/movies/import" method="POST" enctype="multipart/form-data">
+    <input type="file" name="movies" accept=".txt" required />
+    <br /><br />
+    <input type="submit" value="Імпортувати" />
+  </form>
+</body>
+</html>

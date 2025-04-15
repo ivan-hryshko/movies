@@ -1,14 +1,12 @@
 import express from 'express'
-import routes from './routes/index.js'
+import rootRoutes from './routes/root.routes'
+import apiV1routes from './routes/api-v1.routes.js'
 
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Welcome to Movies!')
-})
-
 app.use(express.json())
 
-app.use('/api/v1', routes)
+app.use('/', rootRoutes)
+app.use('/api/v1', apiV1routes)
 
 export default app
