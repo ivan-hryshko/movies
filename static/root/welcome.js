@@ -3,6 +3,7 @@ let token = localStorage.getItem('token') || ''
 
 if (token) {
   document.getElementById('importForm').style.display = 'block'
+  document.getElementById('loginForm').style.display = 'none'
 }
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
