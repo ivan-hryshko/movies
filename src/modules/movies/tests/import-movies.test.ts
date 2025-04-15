@@ -9,6 +9,7 @@ const brokenMoviesPath = path.join(__dirname, '../examples/broken-movies.txt')
 
 describe('GET /api/v1/movies/', () => {
   beforeAll(async () => {
+    await testHelper.prepare()
     token = await testHelper.generateTokenAndUser()
   })
   beforeEach(async () => {

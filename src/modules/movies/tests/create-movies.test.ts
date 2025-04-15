@@ -6,6 +6,7 @@ let token = ''
 
 describe('POST /api/v1/movies', () => {
   beforeAll(async () => {
+    await testHelper.prepare()
     token = await testHelper.generateTokenAndUser()
   })
 

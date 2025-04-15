@@ -2,8 +2,12 @@ import request from 'supertest'
 import app from '../../../app'
 import jwt from 'jsonwebtoken'
 import ENV_VARIABLES from '../../../config/envs'
+import { testHelper } from '../../../utils/testHelper'
 
 describe('POST /api/v1/sessions', () => {
+    beforeAll(async () => {
+      await testHelper.prepare()
+    })
   it('should create a session successfully', async () => {
     const userData = {
       "email": "session@gmail.com",

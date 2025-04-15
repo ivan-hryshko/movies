@@ -24,6 +24,7 @@ const movieData2 = {
 
 describe('GET /api/v1/movies/', () => {
   beforeAll(async () => {
+    await testHelper.prepare()
     token = await testHelper.generateTokenAndUser()
     createRes = await request(app)
       .post('/api/v1/movies')

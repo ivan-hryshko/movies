@@ -61,10 +61,8 @@ export class MoviesService {
   static parseMoviesTxtFromFile(path: string): CreateMovieDto[]  {
     const content = fs.readFileSync(path, 'utf-8').trim()
     const entrieBlocks = content.split(/\n\s*\n/)
-    console.log('entrieBlocks :>> ', entrieBlocks);
 
     const moviesData: CreateMovieDto[] = entrieBlocks.map(block => {
-      console.log('block :>> ', block);
       const lines = block.split('\n')
       const movieData: any = {}
 
@@ -104,7 +102,6 @@ export class MoviesService {
         title: data.title,
       })
       if (list.movies.length > 0) {
-        console.log('Movie already exists:', data.title)
         continue
       }
       const dto = new CreateMovieDto({
