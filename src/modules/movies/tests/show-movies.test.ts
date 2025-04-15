@@ -2,12 +2,10 @@ import request from 'supertest'
 import app from '../../../app'
 import { testHelper } from '../../../utils/testHelper'
 
-let token = ''
-
 describe('GET /api/v1/movies/:id', () => {
   beforeAll(async () => {
     await testHelper.prepare()
-    token = await testHelper.generateTokenAndUser()
+    await testHelper.generateTokenAndUser()
   })
 
   it('should not show a movie without id', async () => {
@@ -20,13 +18,13 @@ describe('GET /api/v1/movies/:id', () => {
     const responseCreate = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(responseCreate.status).toBe(200)
 
     const responseMovie = await request(app)
       .get(`/api/v1/movies/undefined`)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(responseMovie.status).toBe(400)
   })
@@ -42,13 +40,13 @@ describe('GET /api/v1/movies/:id', () => {
     const createResponse = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(createResponse.status).toBe(200)
 
     const responseMovie = await request(app)
       .get(`/api/v1/movies/${createResponse.body.data.id}`)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(responseMovie.status).toBe(200)
     expect(responseMovie.body.status).toBe(1)

@@ -2,12 +2,10 @@ import request from 'supertest'
 import app from '../../../app'
 import { testHelper } from '../../../utils/testHelper'
 
-let token = ''
-
 describe('POST /api/v1/movies', () => {
   beforeAll(async () => {
     await testHelper.prepare()
-    token = await testHelper.generateTokenAndUser()
+    await testHelper.generateTokenAndUser()
   })
 
   it('should create a movie with emty actors', async () => {
@@ -20,7 +18,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(200)
     expect(response.body.data.title).toBe(movieData.title)
@@ -44,7 +42,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(200)
     expect(response.body.status).toBe(1)
@@ -73,7 +71,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -94,7 +92,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -114,7 +112,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -135,7 +133,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -156,7 +154,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -177,7 +175,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -197,7 +195,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -218,7 +216,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -239,7 +237,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -255,7 +253,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -274,7 +272,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -293,7 +291,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -312,7 +310,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
@@ -328,7 +326,7 @@ describe('POST /api/v1/movies', () => {
     const response = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
 
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)

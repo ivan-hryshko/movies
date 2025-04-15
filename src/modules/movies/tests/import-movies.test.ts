@@ -3,19 +3,18 @@ import app from '../../../app'
 import { testHelper } from '../../../utils/testHelper'
 import path from 'path'
 
-let token = ''
 const moviesPath = path.join(__dirname, '../examples/movies.txt')
 const brokenMoviesPath = path.join(__dirname, '../examples/broken-movies.txt')
 
 describe('GET /api/v1/movies/', () => {
   beforeAll(async () => {
     await testHelper.prepare()
-    token = await testHelper.generateTokenAndUser()
+    await testHelper.generateTokenAndUser()
   })
   beforeEach(async () => {
     const listRes = await request(app)
     .get(`/api/v1/movies`)
-    .set('Authorization', `${token}`)
+    .set('Authorization', `${testHelper.getToken()}`)
 
     expect(listRes.status).toBe(200)
     const body = listRes.body
@@ -24,13 +23,13 @@ describe('GET /api/v1/movies/', () => {
     for (const id of movieIds) {
       await request(app)
         .delete(`/api/v1/movies/${id}`)
-        .set('Authorization', `${token}`)
+        .set('Authorization', `${testHelper.getToken()}`)
     }
   })
   it('should import a movies successfully', async () => {
     const importRes = await request(app)
       .post(`/api/v1/movies/import`)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
       .attach('movies', moviesPath) // form field name is 'movies'
 
     expect(importRes.status).toBe(200)
@@ -47,7 +46,7 @@ describe('GET /api/v1/movies/', () => {
   it('should import a broken movies list successfully', async () => {
     const importRes = await request(app)
       .post(`/api/v1/movies/import`)
-      .set('Authorization', `${token}`)
+      .set('Authorization', `${testHelper.getToken()}`)
       .attach('movies', brokenMoviesPath)
 
     expect(importRes.status).toBe(200)
