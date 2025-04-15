@@ -1,5 +1,6 @@
 import request from 'supertest'
 import app from '../app'
+import sequelize from '../config/database'
 
 export class testHelper {
   private static token = ''
@@ -33,5 +34,9 @@ export class testHelper {
     const token = createUserRes.body.token
     this.setToken(token)
     return token
+  }
+
+  static async prepare() {
+    await sequelize.sync({ force: false });
   }
 }

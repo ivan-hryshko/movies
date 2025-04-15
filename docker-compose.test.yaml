@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  movies:
+    build: .
+    ports:
+      - "8000:8050"
+    env_file:
+      - .env.test.local
+    command: 'npm run test create-users.test.ts'
+    # command: 'npm run test create-sessions.test.ts'
+

@@ -1,7 +1,11 @@
 import request from 'supertest'
 import app from '../../../app'
+import { testHelper } from '../../../utils/testHelper'
 
 describe('POST /api/v1/users', () => {
+  beforeAll(async () => {
+    await testHelper.prepare()
+  })
   it('should create a user successfully', async () => {
     const userData = {
       "email": "test@gmail.com",
@@ -67,4 +71,19 @@ describe('POST /api/v1/users', () => {
     expect(response.status).toBe(400)
     expect(response.body.errors.length).toBeGreaterThan(0)
     expect(response.body.errors[0].path).toBe('confirmPassword')
-  })})
+  })
+  it('should not create a user with empty strings data', async () => {
+    const userData = {
+      "email": "    ",
+      "name": "  ",
+      "password": "   ",
+      "confirmPassword": "    ",
+    }
+    const response = await request(app)
+      .post('/api/v1/users')
+      .send(userData)
+    expect(response.status).not.toBe(200)
+    expect(response.status).toBe(400)
+    expect(response.body.errors.length).toBeGreaterThan(0)
+  })
+})
