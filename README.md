@@ -25,6 +25,16 @@ It allows you to manage a list of movies and their associated actors.
   Therefore, I temporarily moved all model files into the models directory to comply with this requirement.
   Normally, I prefer to keep model files inside their respective modules for better modularization.
 
+## View routes
+- Signup
+```bash
+/
+```
+- Movie import
+```bash
+/movies/import
+```
+
 ---
 
 ## 🚀 Quick Start
