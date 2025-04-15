@@ -99,6 +99,48 @@ describe('POST /api/v1/movies', () => {
     expect(response.body.errors.length).toBeGreaterThan(0)
     expect(response.body.errors[0].path).toBe('year')
   })
+  it('should not create a movie with minus year', async () => {
+    const movieData = {
+      title : 'Casablanca',
+      year: -100,
+      format: 'DVD',
+      actors: [
+        'Humphrey Bogart',
+        'Ingrid Bergman',
+        'Claude Rains',
+        'Peter Lorre'
+      ]
+    }
+    const response = await request(app)
+      .post('/api/v1/movies')
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body.errors.length).toBeGreaterThan(0)
+    expect(response.body.errors[0].path).toBe('year')
+  })
+  it('should not create a movie with unreal year', async () => {
+    const movieData = {
+      title : 'Casablanca',
+      year: 20000,
+      format: 'DVD',
+      actors: [
+        'Humphrey Bogart',
+        'Ingrid Bergman',
+        'Claude Rains',
+        'Peter Lorre'
+      ]
+    }
+    const response = await request(app)
+      .post('/api/v1/movies')
+      .send(movieData)
+      .set('Authorization', `${token}`)
+
+    expect(response.status).toBe(400)
+    expect(response.body.errors.length).toBeGreaterThan(0)
+    expect(response.body.errors[0].path).toBe('year')
+  })
   it('should not create a movie without format', async () => {
     const movieData = {
       title : 'Casablanca',

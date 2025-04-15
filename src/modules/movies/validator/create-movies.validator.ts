@@ -1,14 +1,17 @@
 import { body } from 'express-validator'
 import { MOVIE_FORMATS } from '../movies.constants'
 import { RequestValidatror } from '../../../utils/request.validatro'
-export class MoviesValidatorCreate {
+import { MoviesValidator } from './movies.validator'
+
+export class MoviesValidatorCreate extends MoviesValidator {
   private static validateYear() {
     return body('year')
       .notEmpty().withMessage('Year is required.')
-      .isInt({ min: 0 }).withMessage('Year must be a valid number greater than or equal to 0.')
+      .isInt({ min: 0, max: this.getMaxYear() }).withMessage('Year must be a valid number greater than or equal to 0.')
   }
   private static validateTitle() {
     return body('title')
+      .trim()
       .notEmpty().withMessage('Title is required.')
       .isString().withMessage('Title must be a string.')
   }
@@ -17,6 +20,7 @@ export class MoviesValidatorCreate {
   }
   private static validateFormat() {
     return body('format')
+      .trim()
       .isIn(MOVIE_FORMATS).withMessage(this.getFormatMessage())
   }
 
