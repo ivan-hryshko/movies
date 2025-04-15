@@ -8,10 +8,10 @@ export class UsersValidator {
     UsersCreateRules.validateName(),
     UsersCreateRules.validatePassword(),
     UsersCreateRules.validateConfirmPassword(),
+    RequestValidatror.validateRequestMiddleware,
   ]
 
   public static create(req: any, res: any) {
-    RequestValidatror.validateRequest(req, res)
     return {
       email: req.body.email,
       name: req.body.name,
