@@ -1,7 +1,16 @@
-import { col, fn, Op, where } from "sequelize"
+import { col, fn, literal, Op, Order, Sequelize, where } from "sequelize"
 import Actor from "../../models/actors.model"
 import Movie from "../../models/movies.model"
 
+export type MovieGetListParams = {
+  actor?: string
+  title?: string
+  search?: string
+  sort?: string
+  order?: string
+  limit?: number
+  offset?: number
+}
 export class MoviesRepository {
   static async getById(movieId: number) {
     const movie = await Movie.findByPk(movieId, {
@@ -17,7 +26,32 @@ export class MoviesRepository {
     return movie
   }
 
-  static async getList(query: any) {
+  // static prepareOrderForGetList(sort: string, order: string) {
+  //   if (sort === 'title') {
+  //     return [
+  //       [
+  //         Sequelize.fn('lower', Sequelize.col('title')),
+  //         'ASC',
+  //       ],
+  //     ]
+  //   }
+  //   return [[sort, order]]
+  //   // order: sort === 'title'
+  //   //   ? [[literal(`LOWER("Movie"."title") COLLATE NOCASE"`), order]]
+  //   //   : [[sort, order]],
+
+  // }
+  static prepareOrderForGetList(sort: string, order: string) {
+    if (sort === 'title') {
+      return [
+        [Sequelize.literal('UPPER("Movie"."title") COLLATE NOCASE'), order.toUpperCase()],
+      ] as Order
+    }
+    return [[sort, order.toUpperCase()]] as Order
+  }
+  
+
+  static async getList(query: MovieGetListParams) {
     const {
       actor,
       title,
@@ -61,7 +95,6 @@ export class MoviesRepository {
         }),
       ]
     }
-
     const { count: total, rows: movies } = await Movie.findAndCountAll({
       where: whereClause,
       include: [
@@ -74,7 +107,7 @@ export class MoviesRepository {
           attributes: [],
         },
       ],
-      order: [[sort, order]],
+      order: this.prepareOrderForGetList(sort, order),
       limit: Number(limit),
       offset: Number(offset),
       distinct: true,
