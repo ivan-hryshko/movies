@@ -69,6 +69,15 @@ describe('GET /api/v1/movies/', () => {
     await request(app)
       .post('/api/v1/movies')
       .send({
+          title: 'марвел',
+          year: 1942,
+          format: 'DVD',
+          actors: []
+      })
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+    await request(app)
+      .post('/api/v1/movies')
+      .send({
           title: 'амнезія',
           year: 1942,
           format: 'DVD',
@@ -194,7 +203,7 @@ describe('GET /api/v1/movies/', () => {
 
     expect(listRes.body.meta).toBeDefined()
     expect(listRes.body.meta.total).toBeDefined()
-    expect(listRes.body.meta.total).toBe(6)
+    expect(listRes.body.meta.total).toBe(7)
 
     expect(listRes.body.data[0].title).toContain('bblazing Saddles')
     expect(listRes.body.data[1].title).toContain('Blazing Saddles')

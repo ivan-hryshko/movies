@@ -26,21 +26,6 @@ export class MoviesRepository {
     return movie
   }
 
-  // static prepareOrderForGetList(sort: string, order: string) {
-  //   if (sort === 'title') {
-  //     return [
-  //       [
-  //         Sequelize.fn('lower', Sequelize.col('title')),
-  //         'ASC',
-  //       ],
-  //     ]
-  //   }
-  //   return [[sort, order]]
-  //   // order: sort === 'title'
-  //   //   ? [[literal(`LOWER("Movie"."title") COLLATE NOCASE"`), order]]
-  //   //   : [[sort, order]],
-
-  // }
   static prepareOrderForGetList(sort: string, order: string) {
     if (sort === 'title') {
       return [
@@ -48,8 +33,13 @@ export class MoviesRepository {
       ] as Order
     }
     return [[sort, order.toUpperCase()]] as Order
+    // if (sort === 'title') {
+    //   return [
+    //     [Sequelize.fn('lower', Sequelize.col('title')), order.toUpperCase()],
+    //   ] as Order
+    // }
+    // return [[sort, order.toUpperCase()]] as Order
   }
-  
 
   static async getList(query: MovieGetListParams) {
     const {
