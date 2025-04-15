@@ -8,25 +8,25 @@ describe('DELETE /api/v1/movies/:id', () => {
     await testHelper.generateTokenAndUser()
   })
 
-  it('should not delete a movie without id', async () => {
+  it('should not delete a movie with invalid id', async () => {
     const movieData = {
       title: 'Casablanca',
       year: 1942,
       format: 'DVD',
       actors: [],
     }
-    const responseCreate = await request(app)
+    const createRes = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
       .set('Authorization', `${testHelper.getToken()}`)
 
-    expect(responseCreate.status).toBe(200)
+    expect(createRes.status).toBe(200)
 
-    const responseDel = await request(app)
+    const deleteDes = await request(app)
       .delete(`/api/v1/movies/undefined`)
       .set('Authorization', `${testHelper.getToken()}`)
 
-    expect(responseDel.status).toBe(400)
+    expect(deleteDes.status).toBe(400)
   })
   it('should delte a movie successfully', async () => {
     const movieData = {
@@ -37,19 +37,26 @@ describe('DELETE /api/v1/movies/:id', () => {
         'Humphrey Bogart',
       ]
     }
-    const response = await request(app)
+    const createRes = await request(app)
       .post('/api/v1/movies')
       .send(movieData)
       .set('Authorization', `${testHelper.getToken()}`)
 
-    expect(response.status).toBe(200)
-
-    const responseDel = await request(app)
-      .delete(`/api/v1/movies/${response.body.data.id}`)
+    expect(createRes.status).toBe(200)
+    const deleteDes = await request(app)
+      .delete(`/api/v1/movies/${createRes.body.data.i}`)
       .set('Authorization', `${testHelper.getToken()}`)
 
-    expect(responseDel.status).toBe(200)
-    expect(responseDel.body.status).toBe(1)
-    expect(responseDel.body).toEqual({ status: 1 })
+    expect(deleteDes.status).toBe(200)
+    expect(deleteDes.body.status).toBe(1)
+    expect(deleteDes.body).toEqual({ status: 1 })
+  })
+  it('should not delete a movie with not exist id', async () => {
+    const deleteDes = await request(app)
+      .delete(`/api/v1/movies/99999`)
+      .set('Authorization', `${testHelper.getToken()}`)
+
+    expect(deleteDes.status).toBe(400)
+    expect(deleteDes.body.message).toContain('Movie not found')
   })
 })

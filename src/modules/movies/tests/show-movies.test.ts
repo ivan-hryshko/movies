@@ -8,7 +8,7 @@ describe('GET /api/v1/movies/:id', () => {
     await testHelper.generateTokenAndUser()
   })
 
-  it('should not show a movie without id', async () => {
+  it('should not show a movie with invalid id', async () => {
     const movieData = {
       title: 'Casablanca',
       year: 1942,
@@ -27,6 +27,14 @@ describe('GET /api/v1/movies/:id', () => {
       .set('Authorization', `${testHelper.getToken()}`)
 
     expect(responseMovie.status).toBe(400)
+  })
+  it('should not show a movie with not exist id', async () => {
+    const showRest = await request(app)
+      .get(`/api/v1/movies/99999`)
+      .set('Authorization', `${testHelper.getToken()}`)
+
+    expect(showRest.status).toBe(400)
+    expect(showRest.body.message).toContain('Movie not found')
   })
   it('should show a movie successfully', async () => {
     const movieData = {

@@ -26,9 +26,13 @@ export class MovieController {
     try {
       await MoviesService.delete(params)
       res.status(200).json(MovieResponse.delete())
-    } catch (error) {
-      Logger.error('Error deleting movie:', error)
-      res.status(500).json({ message: 'Error deleting movie', error })
+    } catch (error: any) {
+      if (error?.message === 'Movie not found') {
+        res.status(400).json({ message: 'Movie not found' })
+      } else {
+        Logger.error('Error deleting movie:', error)
+        res.status(500).json({ message: 'Error deleting movie', error })
+      }
     }
   }
   static async show(req: Request, res: Response): Promise<void>{
@@ -37,9 +41,13 @@ export class MovieController {
     try {
       const movie = await MoviesService.getById(params.id)
       res.status(200).json(MovieResponse.show(movie))
-    } catch (error) {
-      Logger.error('Error getting movie:', error)
-      res.status(500).json({ message: 'Error getting movie', error })
+    } catch (error: any) {
+      if (error?.message === 'Movie not found') {
+        res.status(400).json({ message: '`Movie not found`' })
+      } else {
+        Logger.error('Error getting movie:', error)
+        res.status(500).json({ message: 'Error getting movie', error })
+      }
     }
   }
   static async list(req: Request, res: Response): Promise<void>{
