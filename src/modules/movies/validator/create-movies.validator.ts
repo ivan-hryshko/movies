@@ -27,7 +27,16 @@ export class MoviesValidatorCreate extends MoviesValidator {
   private static validateActors() {
     return body('actors')
       .isArray().withMessage('Actors must be an array.')
-    }
+      .custom((actors) => {
+        for (const actor of actors) {
+          if (typeof actor !== 'string' || actor.trim() === '') {
+            throw new Error('Each actor must be a non-empty string')
+          }
+        }
+
+        return true
+      })
+  }
 
   public static validate = [
     this.validateTitle(),
