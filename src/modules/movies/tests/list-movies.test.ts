@@ -230,6 +230,29 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.data[2].title).toContain('Casablanca')
     expect(listRes.body.data[3].title).toContain('амнезія')
   })
+  it('should list a movie successfully sort by title with Ї', async () => {
+    const query = {
+      sort: 'title',
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+      .query(query)
+    expect(listRes.status).toBe(200)
+    expect(listRes.body.status).toBe(1)
+    expect(Array.isArray(listRes.body.data)).toBe(true)
+
+    expect(listRes.body.meta).toBeDefined()
+    expect(listRes.body.meta.total).toBeDefined()
+    expect(listRes.body.meta.total).toBe(9)
+    expect(listRes.body.data[0].title).toContain('bblazing Saddles')
+    expect(listRes.body.data[0].title_lower).not.toBeDefined()
+    expect(listRes.body.data[1].title).toContain('Blazing Saddles')
+    expect(listRes.body.data[2].title).toContain('Casablanca')
+    expect(listRes.body.data[3].title).toContain('амнезія')
+    expect(listRes.body.data[listRes.body.data.length - 1].title).not.toContain('їжак')
+  })
   it('should list a movie with correct sort', async () => {
     const query = {
       sort: 'id'
