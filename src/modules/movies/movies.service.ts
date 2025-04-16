@@ -5,6 +5,7 @@ import { CreateMovieDto } from './dto/create-movies.dto'
 import { MovieRequestDelete } from './movies.request'
 import { MoviesRepository } from './movies.repository'
 import { Logger } from '../../utils/logger'
+import { MoviesValidator } from './validator/movies.validator'
 
 export class MoviesService {
   public static async create(dto: CreateMovieDto) {
@@ -98,6 +99,12 @@ export class MoviesService {
     const createdMovies: Movie[] = []
 
     for (const data of moviesData) {
+      const errors = MoviesValidator.validate(data)
+
+      if (errors.length) {
+        Logger.error(`Validation failed for "${data.title}": ${errors.join(', ')}`, {})
+        continue
+      }
       const list = await MoviesRepository.getList({
         title: data.title,
       })
