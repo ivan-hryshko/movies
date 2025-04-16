@@ -7,7 +7,7 @@
     "prepare": "husky install",
     "test": "jest --detectOpenHandles",
     "test-d": "TEST_COMMAND=\"npm run test\" docker-compose -f docker-compose.test.yaml up --build --abort-on-container-exit",
-    "test-d-list": "TEST_COMMAND=\"npm run test import-movies.test.ts\" docker-compose -f docker-compose.test.yaml up --build --abort-on-container-exit",
+    "test-d-list": "TEST_COMMAND=\"npm run test list-movies.test.ts\" docker-compose -f docker-compose.test.yaml up --build --abort-on-container-exit",
     "prestart": "npm run build",
     "build": "rm -rf dist && npx tsc",
     "start": "node dist/index.js",

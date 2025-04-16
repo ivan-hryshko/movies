@@ -229,10 +229,53 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.data[1].title).toContain('Blazing Saddles')
     expect(listRes.body.data[2].title).toContain('Casablanca')
     expect(listRes.body.data[3].title).toContain('амнезія')
-    // expect(listRes.body.data[0].year).toBe(movieData2.year)
-    // expect(listRes.body.data[0].format).toBe(movieData2.format)
-    // expect(listRes.body.data[0].actors).not.toBeDefined()
-    // expect(listRes.body.data[0].createdAt).toBeDefined()
-    // expect(listRes.body.data[0].updatedAt).toBeDefined()
+  })
+  it('should list a movie with correct sort', async () => {
+    const query = {
+      sort: 'id'
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+      .query(query)
+    expect(listRes.status).toBe(200)
+    expect(listRes.body.status).toBe(1)
+    expect(listRes.body.meta.total).toBe(9)
+  })
+  it('should list a movie with correct sort', async () => {
+    const query = {
+      sort: 'year'
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+      .query(query)
+    expect(listRes.status).toBe(200)
+    expect(listRes.body.status).toBe(1)
+    expect(listRes.body.meta.total).toBe(9)
+  })
+  it('should not list a movie with incorrect sort', async () => {
+    const query = {
+      sort: 'wrong sort'
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+      .query(query)
+    expect(listRes.status).toBe(400)
+  })
+  it('should not list a movie with incorrect order', async () => {
+    const query = {
+      order: 'adasd',
+    }
+
+    const listRes = await request(app)
+      .get(`/api/v1/movies`)
+      .set('Authorization', `${MoviesTestHelper.getToken()}`)
+      .query(query)
+    expect(listRes.status).toBe(400)
   })
 })
