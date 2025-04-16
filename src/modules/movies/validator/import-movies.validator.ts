@@ -3,7 +3,6 @@ import { RequestValidatror } from '../../../utils/request.validatro'
 
 export class MoviesValidatorImport {
   private static validateMoviesFile(req: Request, res: Response, next: NextFunction) {
-    console.log('req.body :>> ', req.body);
     const file = req.file
 
     if (!file) {

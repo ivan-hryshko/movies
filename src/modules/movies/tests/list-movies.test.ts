@@ -208,7 +208,6 @@ describe('GET /api/v1/movies/', () => {
   //   expect(listRes.body.data[0].updatedAt).toBeDefined()
   // })
   it('should list a movie successfully sort by title', async () => {
-    console.log('should list a movie successfully s');
     const query = {
       sort: 'title',
     }
@@ -217,7 +216,6 @@ describe('GET /api/v1/movies/', () => {
       .get(`/api/v1/movies`)
       .set('Authorization', `${MoviesTestHelper.getToken()}`)
       .query(query)
-    console.log('listRes.body.data :>> ', listRes.body.data);
     expect(listRes.status).toBe(200)
     expect(listRes.body.status).toBe(1)
     expect(Array.isArray(listRes.body.data)).toBe(true)
