@@ -1,6 +1,6 @@
 import { col, fn, literal, Op, Order, Sequelize, where } from "sequelize"
-import Actor from "../../models/actors.model"
-import Movie from "../../models/movies.model"
+import Actor from "../../../models/actors.model"
+import Movie from "../../../models/movies.model"
 
 export type MovieGetListParams = {
   actor?: string
@@ -12,39 +12,7 @@ export type MovieGetListParams = {
   offset?: number
 }
 
-export type MovieCreateparams = {
-  title: string
-  year: number
-  format: string
-}
-export class MoviesRepository {
-  static async create(params: MovieCreateparams) {
-    const movie = await Movie.create({
-      title: params.title,
-      title_lower: params.title.toLocaleLowerCase('und'),
-      year: params.year,
-      format: params.format,
-    })
-    const plainMovie = movie.get({ plain: true }) as { [key: string]: any }
-    delete plainMovie.title_lower
-    return movie
-  }
-
-  static async getById(movieId: number) {
-    const movie = await Movie.findByPk(movieId, {
-      include: [
-        {
-          model: Actor,
-          as: 'actors',
-          through: { attributes: [] },
-        },
-      ],
-      attributes: { exclude: ['title_lower'] },
-    })
-
-    return movie
-  }
-
+export class MoviesRepositoryList {
   static prepareOrderForGetList(sort: string, order: string) {
     if (sort === 'title') {
       return [['title_lower', order.toUpperCase()]] as Order
@@ -72,22 +40,22 @@ export class MoviesRepository {
       limit = 20,
       offset = 0,
     } = query
-  
+
     const whereClause: any = {}
     const actorWhereClause: any = {}
-  
+
     if (title) {
       whereClause.title_lower = {
         [Op.like]: `%${title.toLowerCase()}%`
       }
     }
-  
+
     if (search) {
       whereClause[Op.or] = [
         { title_lower: { [Op.like]: `%${search.toLowerCase()}%` } }
       ]
     }
-  
+
     if (actor || search) {
       if (actor) {
         actorWhereClause.name = { [Op.like]: `%${actor.toLowerCase()}%` }
@@ -115,7 +83,6 @@ export class MoviesRepository {
       attributes: sort === 'title'
         ? { include: ['title_lower'] }
         : { exclude: ['title_lower'] },
-      
       order: this.prepareOrderForGetList(sort, order),
       limit: Number(limit),
       offset: Number(offset),

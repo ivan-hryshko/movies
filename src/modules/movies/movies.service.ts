@@ -3,15 +3,17 @@ import Movie from '../../models/movies.model'
 import Actor from '../../models/actors.model'
 import { CreateMovieDto } from './dto/create-movies.dto'
 import { MovieRequestDelete } from './movies.request'
-import { MoviesRepository } from './movies.repository'
+import { MoviesRepositoryCreate } from './repository/create-movies.repository'
 import { Logger } from '../../utils/logger'
 import { MoviesValidator } from './validator/movies.validator'
+import { MoviesRepositoryShow } from './repository/show-movies.repository'
+import { MoviesRepositoryList } from './repository/list-movies.repository'
 
 export class MoviesService {
   public static async create(dto: CreateMovieDto) {
     const { title, year, format, actors } = dto
 
-    const newMovie = await MoviesRepository.create({
+    const newMovie = await MoviesRepositoryCreate.create({
       title,
       year,
       format,
@@ -35,7 +37,7 @@ export class MoviesService {
   }
 
   static async delete(params: MovieRequestDelete) {
-    const movie = await MoviesRepository.getById(params.id)
+    const movie = await MoviesRepositoryShow.show(params.id)
     if (!movie) {
       throw new Error('Movie not found')
     }
@@ -44,7 +46,7 @@ export class MoviesService {
   }
 
   static async getById(id: number) {
-    const movie = await MoviesRepository.getById(id)
+    const movie = await MoviesRepositoryShow.show(id)
 
     if (!movie) {
       throw new Error('Movie not found')
@@ -54,7 +56,7 @@ export class MoviesService {
   }
 
   static async getList(query: any) {
-    const movies = await MoviesRepository.getList(query)
+    const movies = await MoviesRepositoryList.getList(query)
 
     return movies
   }
@@ -105,7 +107,7 @@ export class MoviesService {
         Logger.error(`Validation failed for "${data.title}": ${errors.join(', ')}`, {})
         continue
       }
-      const list = await MoviesRepository.getList({
+      const list = await MoviesRepositoryList.getList({
         title: data.title,
       })
       if (list.movies.length > 0) {
