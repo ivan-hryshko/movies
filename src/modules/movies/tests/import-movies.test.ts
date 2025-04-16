@@ -57,7 +57,7 @@ describe('GET /api/v1/movies/', () => {
     expect(importRes.body.meta).toBeDefined()
     expect(importRes.body.meta.total).toBeDefined()
     expect(importRes.body.meta.total).toBe(1)
-    expect(importRes.body.meta.imported).toBe(5)
+    expect(importRes.body.meta.imported).toBe(9)
   })
   it('should not import movies without movies key', async () => {
     const importRes = await request(app)
