@@ -45,6 +45,7 @@ export class MoviesRepository {
   }
 
   static async getList(query: MovieGetListParams): Promise<{ movies: Movie[], total: number }> {
+    console.log('test');
     const {
       actor,
       title,
