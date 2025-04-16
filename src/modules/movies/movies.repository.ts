@@ -47,7 +47,7 @@ export class MoviesRepository {
 
   static prepareOrderForGetList(sort: string, order: string) {
     if (sort === 'title') {
-      return [[Sequelize.literal('"Movie"."title_lower"'), order.toUpperCase()]] as Order
+      return [['title_lower', order.toUpperCase()]] as Order
     }
     return [[sort, order.toUpperCase()]] as Order
   }
@@ -113,7 +113,7 @@ export class MoviesRepository {
         },
       ],
       attributes: sort === 'title'
-        ? { include: ['title_lower'], exclude: ['title_lower'] }
+        ? { include: ['title_lower'] }
         : { exclude: ['title_lower'] },
       
       order: this.prepareOrderForGetList(sort, order),
