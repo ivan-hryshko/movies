@@ -21,6 +21,7 @@ export class MoviesRepository {
           through: { attributes: [] },
         },
       ],
+      attributes: { exclude: ['title_lower'] },
     })
 
     return movie
@@ -28,20 +29,22 @@ export class MoviesRepository {
 
   static prepareOrderForGetList(sort: string, order: string) {
     if (sort === 'title') {
-      return [
-        [Sequelize.literal('UPPER("Movie"."title") COLLATE NOCASE'), order.toUpperCase()],
-      ] as Order
+      return [[Sequelize.literal('"Movie"."title_lower"'), order.toUpperCase()]] as Order
     }
     return [[sort, order.toUpperCase()]] as Order
-    // if (sort === 'title') {
-    //   return [
-    //     [Sequelize.fn('lower', Sequelize.col('title')), order.toUpperCase()],
-    //   ] as Order
-    // }
-    // return [[sort, order.toUpperCase()]] as Order
   }
 
-  static async getList(query: MovieGetListParams) {
+  static stripPrivateFields(items: any[], keys: string[] = []) {
+    return items.map((item) => {
+      const clean = typeof item.get === 'function' ? item.get({ plain: true }) : { ...item };
+      for (const key of keys) {
+        if (key in clean) delete clean[key];
+      }
+      return clean;
+    });
+  }
+
+  static async getList(query: MovieGetListParams): Promise<{ movies: Movie[], total: number }> {
     const {
       actor,
       title,
@@ -51,58 +54,58 @@ export class MoviesRepository {
       limit = 20,
       offset = 0,
     } = query
+  
     const whereClause: any = {}
     const actorWhereClause: any = {}
-
+  
     if (title) {
-      whereClause.title = where(fn('LOWER', col('title')), {
+      whereClause.title_lower = {
         [Op.like]: `%${title.toLowerCase()}%`
-      })
-    }
-
-    if (actor) {
-      actorWhereClause.name = {
-        [Op.like]: `%${actor.toLowerCase()}%`
       }
     }
-
-    let actorIncludeWhere: any = undefined
-    if (actor || search) {
-      actorIncludeWhere = {
-        ...(actor ? actorWhereClause : {}),
-        ...(search ? {
-          name: {
-            [Op.like]: `%${search.toLowerCase()}%`
-          }
-        } : {})
-      }
-    }
-
+  
     if (search) {
       whereClause[Op.or] = [
-        where(fn('LOWER', col('title')), {
-          [Op.like]: `%${search.toLowerCase()}%`
-        }),
+        { title_lower: { [Op.like]: `%${search.toLowerCase()}%` } }
       ]
     }
+  
+    if (actor || search) {
+      if (actor) {
+        actorWhereClause.name = { [Op.like]: `%${actor.toLowerCase()}%` }
+      }
+
+      if (search) {
+        actorWhereClause.name = {
+          [Op.like]: `%${search.toLowerCase()}%`
+        }
+      }
+    }
+
     const { count: total, rows: movies } = await Movie.findAndCountAll({
       where: whereClause,
       include: [
         {
           model: Actor,
           as: 'actors',
-          where: actorIncludeWhere,
           through: { attributes: [] },
           required: !!actor || !!search,
+          where: Object.keys(actorWhereClause).length ? actorWhereClause : undefined,
           attributes: [],
         },
       ],
+      attributes: sort === 'title'
+        ? { include: ['title_lower'], exclude: ['title_lower'] }
+        : { exclude: ['title_lower'] },
+      
       order: this.prepareOrderForGetList(sort, order),
       limit: Number(limit),
       offset: Number(offset),
       distinct: true,
     })
 
-    return { movies, total }
+    const cleanMovies = this.stripPrivateFields(movies, ['title_lower'])
+
+    return { movies: cleanMovies, total }
   }
 }

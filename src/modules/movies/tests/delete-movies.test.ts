@@ -44,7 +44,7 @@ describe('DELETE /api/v1/movies/:id', () => {
 
     expect(createRes.status).toBe(200)
     const deleteDes = await request(app)
-      .delete(`/api/v1/movies/${createRes.body.data.i}`)
+      .delete(`/api/v1/movies/${createRes.body.data.id}`)
       .set('Authorization', `${testHelper.getToken()}`)
 
     expect(deleteDes.status).toBe(200)

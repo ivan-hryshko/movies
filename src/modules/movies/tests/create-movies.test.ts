@@ -22,6 +22,7 @@ describe('POST /api/v1/movies', () => {
 
     expect(response.status).toBe(200)
     expect(response.body.data.title).toBe(movieData.title)
+    expect(response.body.data.title_lower).not.toBeDefined()
     expect(response.body.data.year).toBe(movieData.year)
     expect(response.body.data.format).toBe(movieData.format)
     expect(response.body.data.actors).toHaveLength(0)

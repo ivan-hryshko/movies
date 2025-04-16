@@ -40,6 +40,7 @@ describe('GET /api/v1/movies/', () => {
     expect(importRes.body.meta.total).toBe(25)
     expect(importRes.body.meta.imported).toBe(25)
     expect(importRes.body.data[0].title).toBe('Blazing Saddles')
+    expect(importRes.body.data[0].title_lower).not.toBeDefined()
     expect(importRes.body.data[0].year).toBe(1974)
     expect(importRes.body.data[0].format).toBe('VHS')
   })

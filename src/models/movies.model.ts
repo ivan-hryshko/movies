@@ -5,6 +5,7 @@ import Actor from './actors.model'
 interface MovieAttributes {
   id: number
   title: string
+  title_lower: string
   year: number
   format: string
 }
@@ -14,6 +15,7 @@ interface MovieCreationAttributes extends Optional<MovieAttributes, 'id'> {}
 class Movie extends Model<MovieAttributes, MovieCreationAttributes> implements MovieAttributes {
   public id!: number
   public title!: string
+  public title_lower!: string
   public year!: number
   public format!: string
 
@@ -34,6 +36,10 @@ Movie.init(
     },
     title: {
       type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    title_lower: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     year: {

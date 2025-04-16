@@ -12,6 +12,7 @@ export class MoviesService {
 
     const newMovie = await Movie.create({
       title,
+      title_lower: title.toLocaleLowerCase('und'),
       year,
       format,
     })

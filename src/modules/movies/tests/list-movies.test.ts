@@ -106,6 +106,7 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.meta.total).toBe(1)
 
     expect(listRes.body.data[0].title).toBe(movieData.title)
+    expect(listRes.body.data[0].title_lower).not.toBeDefined()
     expect(listRes.body.data[0].year).toBe(movieData.year)
     expect(listRes.body.data[0].format).toBe(movieData.format)
     expect(listRes.body.data[0].actors).not.toBeDefined()
@@ -131,6 +132,7 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.meta.total).toBe(2)
 
     expect(listRes.body.data[0].title).toBe(movieData.title)
+    expect(listRes.body.data[0].title_lower).not.toBeDefined()
     expect(listRes.body.data[0].year).toBe(movieData.year)
     expect(listRes.body.data[0].format).toBe(movieData.format)
     expect(listRes.body.data[0].actors).not.toBeDefined()
@@ -188,6 +190,7 @@ describe('GET /api/v1/movies/', () => {
   //   expect(listRes.body.data[0].updatedAt).toBeDefined()
   // })
   it('should list a movie successfully sort by title', async () => {
+    console.log('should list a movie successfully s');
     const query = {
       sort: 'title',
     }
@@ -206,6 +209,7 @@ describe('GET /api/v1/movies/', () => {
     expect(listRes.body.meta.total).toBe(7)
 
     expect(listRes.body.data[0].title).toContain('bblazing Saddles')
+    expect(listRes.body.data[0].title_lower).not.toBeDefined()
     expect(listRes.body.data[1].title).toContain('Blazing Saddles')
     expect(listRes.body.data[2].title).toContain('Casablanca')
     expect(listRes.body.data[3].title).toContain('амнезія')
