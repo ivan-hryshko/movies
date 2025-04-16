@@ -13,7 +13,7 @@ export type MovieGetListParams = {
 }
 
 export class MoviesRepositoryList {
-  static prepareOrderForGetList(sort: string, order: string) {
+  static getOrder(sort: string, order: string) {
     if (sort === 'title') {
       return [['title_lower', order.toUpperCase()]] as Order
     }
@@ -30,6 +30,47 @@ export class MoviesRepositoryList {
     });
   }
 
+  static prepareWhereClause(query: MovieGetListParams) {
+    const whereClause: any = {}
+
+    if (query.title) {
+      whereClause.title_lower = {
+        [Op.like]: `%${query.title.toLowerCase()}%`
+      }
+    }
+
+    if (query.search) {
+      whereClause[Op.or] = [
+        { title_lower: { [Op.like]: `%${query.search.toLowerCase()}%` } }
+      ]
+    }
+    return whereClause
+  }
+
+  static prepareActorWhereClause(query: MovieGetListParams) {
+    const actorWhereClause:any = {}
+
+    if (query?.actor || query?.search) {
+      if (query?.actor) {
+        actorWhereClause.name = { [Op.like]: `%${query.actor.toLowerCase()}%` }
+      }
+
+      if (query?.search) {
+        actorWhereClause.name = {
+          [Op.like]: `%${query.search.toLowerCase()}%`
+        }
+      }
+    }
+    return actorWhereClause
+  }
+
+  static getAtributes(query: MovieGetListParams) {
+    const attributes = query.sort === 'title'
+      ? { include: ['title_lower'] }
+      : { exclude: ['title_lower'] }
+    return attributes
+  }
+
   static async getList(query: MovieGetListParams): Promise<{ movies: Movie[], total: number }> {
     const {
       actor,
@@ -41,32 +82,18 @@ export class MoviesRepositoryList {
       offset = 0,
     } = query
 
-    const whereClause: any = {}
-    const actorWhereClause: any = {}
+    let whereClause: any = {}
+    let actorWhereClause: any = {}
 
-    if (title) {
-      whereClause.title_lower = {
-        [Op.like]: `%${title.toLowerCase()}%`
-      }
-    }
+    whereClause = this.prepareWhereClause({
+      title,
+      search
+    })
 
-    if (search) {
-      whereClause[Op.or] = [
-        { title_lower: { [Op.like]: `%${search.toLowerCase()}%` } }
-      ]
-    }
-
-    if (actor || search) {
-      if (actor) {
-        actorWhereClause.name = { [Op.like]: `%${actor.toLowerCase()}%` }
-      }
-
-      if (search) {
-        actorWhereClause.name = {
-          [Op.like]: `%${search.toLowerCase()}%`
-        }
-      }
-    }
+    actorWhereClause = this.prepareActorWhereClause({
+      actor,
+      search
+    })
 
     const { count: total, rows: movies } = await Movie.findAndCountAll({
       where: whereClause,
@@ -80,10 +107,8 @@ export class MoviesRepositoryList {
           attributes: [],
         },
       ],
-      attributes: sort === 'title'
-        ? { include: ['title_lower'] }
-        : { exclude: ['title_lower'] },
-      order: this.prepareOrderForGetList(sort, order),
+      attributes: this.getAtributes({ sort }),
+      order: this.getOrder(sort, order),
       limit: Number(limit),
       offset: Number(offset),
       distinct: true,
