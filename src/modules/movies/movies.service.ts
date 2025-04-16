@@ -10,9 +10,8 @@ export class MoviesService {
   public static async create(dto: CreateMovieDto) {
     const { title, year, format, actors } = dto
 
-    const newMovie = await Movie.create({
+    const newMovie = await MoviesRepository.create({
       title,
-      title_lower: title.toLocaleLowerCase('und'),
       year,
       format,
     })

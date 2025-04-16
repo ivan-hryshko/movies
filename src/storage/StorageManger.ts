@@ -18,7 +18,7 @@ export class StorageManager {
         },
         filename: (req: Request, file: Express.Multer.File, cb) => {
           cb(null, this.strategy.getFilename(req, file))
-        }
+        },
       })
     })
   }

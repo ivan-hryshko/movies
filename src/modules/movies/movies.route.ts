@@ -6,6 +6,7 @@ import { authMiddleware } from "../../middlewares/auth.middleware"
 import { MoviesValidatorList } from "./validator/list-movies.validator"
 import { LocalStorageStrategy } from "../../storage/LocalStorageStrategy"
 import { StorageManager } from "../../storage/StorageManger"
+import { MoviesValidatorImport } from "./validator/import-movies.validator"
 
 const router = Router()
 
@@ -18,6 +19,10 @@ router.post('/', [authMiddleware,  ...MoviesValidatorCreate.validate], MovieCont
 router.delete('/:id', authMiddleware, MovieController.delete)
 router.get('/:id', authMiddleware, MovieController.show)
 router.get('/', [authMiddleware, ...MoviesValidatorList.validate], MovieController.list)
-router.post('/import', [authMiddleware, upload.single('movies')], MovieController.import)
+router.post(
+  '/import',
+  [authMiddleware, upload.single('movies'), ...MoviesValidatorImport.validate],
+  MovieController.import
+)
 
 export default router

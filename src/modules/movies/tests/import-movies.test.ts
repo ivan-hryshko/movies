@@ -5,6 +5,7 @@ import path from 'path'
 
 const moviesPath = path.join(__dirname, '../examples/movies.txt')
 const brokenMoviesPath = path.join(__dirname, '../examples/broken-movies.txt')
+const brokenFormatsPath = path.join(__dirname, '../examples/broken-movies.yaml')
 
 describe('GET /api/v1/movies/', () => {
   beforeAll(async () => {
@@ -57,5 +58,20 @@ describe('GET /api/v1/movies/', () => {
     expect(importRes.body.meta.total).toBeDefined()
     expect(importRes.body.meta.total).toBe(1)
     expect(importRes.body.meta.imported).toBe(5)
+  })
+  it('should not import movies without movies key', async () => {
+    const importRes = await request(app)
+      .post(`/api/v1/movies/import`)
+      .set('Authorization', `${testHelper.getToken()}`)
+
+    expect(importRes.status).toBe(400)
+  })
+  it('should not import movies with incorrect format', async () => {
+    const importRes = await request(app)
+      .post(`/api/v1/movies/import`)
+      .set('Authorization', `${testHelper.getToken()}`)
+      .attach('movies', brokenFormatsPath)
+
+    expect(importRes.status).toBe(400)
   })
 })
