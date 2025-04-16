@@ -7,12 +7,22 @@ import { MoviesRepository } from './movies.repository'
 import { Logger } from '../../utils/logger'
 
 export class MoviesService {
+
+  static setChatCpde(lower: string): number {
+    const firstLetter = Array.from(lower)[0]
+    if (firstLetter[0] === 'і' || firstLetter[0] === 'Ї') {
+      return 1080
+    }
+    return lower.charCodeAt(0)
+  }
   public static async create(dto: CreateMovieDto) {
     const { title, year, format, actors } = dto
 
+    const title_lower = title.toLocaleLowerCase('und')
     const newMovie = await Movie.create({
       title,
-      title_lower: title.toLocaleLowerCase('und'),
+      title_lower,
+      title_char_code: this.setChatCpde(title_lower),
       year,
       format,
     })

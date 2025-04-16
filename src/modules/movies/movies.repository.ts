@@ -29,7 +29,10 @@ export class MoviesRepository {
 
   static prepareOrderForGetList(sort: string, order: string) {
     if (sort === 'title') {
-      return [[Sequelize.literal('"Movie"."title_lower"'), order.toUpperCase()]] as Order
+      return [
+        ['title_char_code', 'ASC'],
+        [Sequelize.literal('"Movie"."title_lower"'), order.toUpperCase()],
+      ] as Order
     }
     return [[sort, order.toUpperCase()]] as Order
   }

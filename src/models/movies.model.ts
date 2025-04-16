@@ -6,6 +6,7 @@ interface MovieAttributes {
   id: number
   title: string
   title_lower: string
+  title_char_code: number
   year: number
   format: string
 }
@@ -16,6 +17,7 @@ class Movie extends Model<MovieAttributes, MovieCreationAttributes> implements M
   public id!: number
   public title!: string
   public title_lower!: string
+  title_char_code: number
   public year!: number
   public format!: string
 
@@ -40,6 +42,10 @@ Movie.init(
     },
     title_lower: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    title_char_code: {
+      type: DataTypes.NUMBER,
       allowNull: false,
     },
     year: {
